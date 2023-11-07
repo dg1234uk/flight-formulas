@@ -1,6 +1,5 @@
-import { flatRoutes } from "remix-flat-routes";
-
 /** @type {import('@remix-run/dev').AppConfig} */
+import { flatRoutes } from "remix-flat-routes";
 
 export default {
   ignoredRouteFiles: ["**/.*"],
