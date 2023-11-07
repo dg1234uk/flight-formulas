@@ -1,5 +1,5 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -8,12 +8,27 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import tailwindStylesheetUrl from "./styles/tailwind.css";
+import { GeneralErrorBoundary } from "./components/error-boundary";
 
-export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-];
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Flight Formulas" },
+    {
+      name: "description",
+      content: `Aviation calulators and unit converters.`,
+    },
+  ];
+};
 
-export default function App() {
+export const links: LinksFunction = () => {
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  ].filter(Boolean);
+};
+
+function Document({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -23,11 +38,29 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <Outlet />
+        {children}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
+  );
+}
+
+export default function App() {
+  return (
+    <Document>
+      <Outlet />
+    </Document>
+  );
+}
+
+export function ErrorBoundary() {
+  return (
+    <Document>
+      <div className="flex-1">
+        <GeneralErrorBoundary />
+      </div>
+    </Document>
   );
 }
