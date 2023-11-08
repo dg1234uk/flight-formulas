@@ -9,7 +9,7 @@ import {
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { knotsToMilesPerHour } from "~/utils/unitConversions";
+import { convertSpeed } from "~/utils/unitConversions";
 
 export default function KnotsToMph() {
   const [mph, setMph] = useState<number | null>(null);
@@ -27,7 +27,7 @@ export default function KnotsToMph() {
 
     const knots = Number(knotsInput.value);
     // convert knots to mph
-    const mph = knotsToMilesPerHour(knots);
+    const mph = convertSpeed(knots, "knots", "mph");
     // set the state of mph
     setMph(mph);
   }

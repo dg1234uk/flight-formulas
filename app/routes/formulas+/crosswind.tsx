@@ -16,15 +16,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { calculateCrosswind } from "~/utils/calculators";
-import {
-  degreesToRadians,
-  knotsToMetersPerSecond,
-  metersPerSecondToKnots,
+import { calculateCrosswindWithUnits } from "~/utils/calculators";
+import type {
+  DirectionUnit,
+  SpeedUnit,
+  ValueUnitPair,
 } from "~/utils/unitConversions";
+import { convertSpeed } from "~/utils/unitConversions";
+
+function inputCheck(value: any, message?: string) {
+  if (!value || typeof value !== "string") {
+    console.error(message || "An invariant failed");
+  }
+}
 
 export default function Crosswind() {
-  const [crosswind, setCrosswind] = useState<number | null>(null);
+  const [crosswind, setCrosswind] = useState<number>();
 
   function handleCalculate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -41,56 +48,68 @@ export default function Crosswind() {
       "windDirection",
     ) as HTMLInputElement;
 
-    const windSpeedUnits = form.elements.namedItem(
+    const windSpeedUnitsGroup = form.elements.namedItem(
       "windSpeedUnits",
-    ) as HTMLSelectElement;
-    const runwayDirectionUnits = form.elements.namedItem(
+    ) as RadioNodeList;
+    const runwayDirectionUnitsGroup = form.elements.namedItem(
       "runwayDirectionUnits",
-    ) as HTMLSelectElement;
-    const windDirectionUnits = form.elements.namedItem(
+    ) as RadioNodeList;
+    const windDirectionUnitsGroup = form.elements.namedItem(
       "windDirectionUnits",
-    ) as HTMLSelectElement;
+    ) as RadioNodeList;
 
-    if (!windSpeedInput && typeof windSpeedInput !== "string") {
-      console.error("Wind Speed required");
-      return;
-    }
-    if (!runwayDirectionInput && typeof runwayDirectionInput !== "string") {
-      console.error("Runway Direction required");
-      return;
-    }
-    if (!windDirectionInput && typeof windDirectionInput !== "string") {
-      console.error("Wind Direction required");
-      return;
-    }
-    if (!windSpeedUnits && typeof windSpeedUnits !== "string") {
-      console.error("Wind Speed Units required");
-      return;
-    }
-    if (!runwayDirectionUnits && typeof runwayDirectionUnits !== "string") {
-      console.error("Runway Direction Units required");
-      return;
-    }
-    if (!windDirectionUnits && typeof windDirectionUnits !== "string") {
-      console.error("Wind Direction Units required");
-      return;
-    }
+    const windSpeedUnits = windSpeedUnitsGroup[1] as HTMLSelectElement;
+    const runwayDirectionUnits =
+      runwayDirectionUnitsGroup[1] as HTMLSelectElement;
+    const windDirectionUnits = windDirectionUnitsGroup[1] as HTMLSelectElement;
 
-    const windSpeed = Number(windSpeedInput.value);
-    const runwayDirection = Number(runwayDirectionInput.value);
-    const windDirection = Number(windDirectionInput.value);
+    inputCheck(windSpeedInput.value, "Wind Speed required");
+    inputCheck(runwayDirectionInput.value, "Runway Direction required");
+    inputCheck(windDirectionInput.value, "Wind Direction required");
+    inputCheck(windSpeedUnits.value, "Wind Speed Units required");
+    inputCheck(runwayDirectionUnits.value, "Runway Direction Units required");
+    inputCheck(windDirectionUnits.value, "Wind Direction Units required");
 
-    const windSpeedInMPS = knotsToMetersPerSecond(windSpeed);
-    const runwayDirectionInRadians = degreesToRadians(runwayDirection);
-    const windDirectionInRadians = degreesToRadians(windDirection);
+    const windSpeed: ValueUnitPair<SpeedUnit> = {
+      value: Number(windSpeedInput.value),
+      unit: "knots",
+    };
+    const runwayDirection: ValueUnitPair<DirectionUnit> = {
+      value: Number(runwayDirectionInput.value),
+      unit: "degrees",
+    };
+    const windDirection: ValueUnitPair<DirectionUnit> = {
+      value: Number(windDirectionInput.value),
+      unit: "degrees",
+    };
 
-    const crosswindComponentInMPS = calculateCrosswind(
-      windSpeedInMPS,
-      windDirectionInRadians,
-      runwayDirectionInRadians,
+    const xwind = calculateCrosswindWithUnits(
+      windSpeed,
+      runwayDirection,
+      windDirection,
     );
 
-    const crosswindComponent = metersPerSecondToKnots(crosswindComponentInMPS);
+    // const windSpeed = Number(windSpeedInput.value);
+    // const runwayDirection = Number(runwayDirectionInput.value);
+    // const windDirection = Number(windDirectionInput.value);
+
+    // const windSpeedInMPS = convertToMetersPerSecond(windSpeed, "knots");
+    // const runwayDirectionInRadians = convertToRadians(runwayDirection);
+    // const windDirectionInRadians = convertToRadians(windDirection);
+
+    // const crosswindComponentInMPS = calculateCrosswind(
+    //   windSpeedInMPS,
+    //   windDirectionInRadians,
+    //   runwayDirectionInRadians,
+    // );
+
+    // const crosswindComponent = convertSpeed(
+    //   crosswindComponentInMPS,
+    //   "m/s",
+    //   "knots",
+    // );
+
+    const crosswindComponent = convertSpeed(xwind.value, xwind.unit, "knots");
 
     setCrosswind(crosswindComponent);
   }

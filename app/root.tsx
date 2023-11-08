@@ -81,6 +81,18 @@ const formulas: Formula[] = [
     name: "Knots to KPH Converter",
     href: "/formulas/knots-to-kph",
   },
+  {
+    name: "Speed Unit Converter",
+    href: "/formulas/speed-converter",
+  },
+  {
+    name: "Distance Unit Converter",
+    href: "/formulas/distance-converter",
+  },
+  {
+    name: "Angle Unit Converter",
+    href: "/formulas/angle-converter",
+  },
 ];
 
 function Document({ children }: { children: React.ReactNode }) {
