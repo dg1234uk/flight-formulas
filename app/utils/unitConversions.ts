@@ -24,3 +24,7 @@ export function nauticalMilesToMeters(nauticalMiles: number) {
 export function metersToNauticalMiles(meters: number) {
   return meters / NAUTICAL_MILES_TO_METERS;
 }
+
+export function knotsToMilesPerHour(knots: number) {
+  return knots * 1.15078;
+}

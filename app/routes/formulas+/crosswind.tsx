@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
+import { calculateCrosswind } from "~/utils/calculators";
 import {
   degreesToRadians,
   knotsToMetersPerSecond,
@@ -10,30 +11,6 @@ import {
 
 export default function Crosswind() {
   const [crosswind, setCrosswind] = useState<number | null>(null);
-
-  /**
-   * Calculates the crosswind component of the wind on a runway.
-   *
-   * @param {number} windSpeed - The speed of the wind in meters per second.
-   * @param {number} windDirection - The direction of the wind in radians.
-   * @param {number} runwayDirection - The direction of the runway in radians.
-   * @returns {number} The absolute value of the crosswind component.
-   */
-  function calculateCrosswind(
-    windSpeed: number,
-    windDirection: number,
-    runwayDirection: number,
-  ) {
-    console.log(windSpeed, windDirection, runwayDirection);
-    // Calculate the angle between the wind and the runway
-    const angleDifference = windDirection - runwayDirection;
-
-    // Calculate the crosswind component
-    const crosswindComponent = Math.sin(angleDifference) * windSpeed;
-
-    // Return the absolute value of crosswindComponent since we're typically interested in the magnitude
-    return Math.abs(crosswindComponent);
-  }
 
   function handleCalculate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

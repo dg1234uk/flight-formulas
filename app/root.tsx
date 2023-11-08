@@ -86,7 +86,7 @@ export default function App() {
               </li>
               <li>
                 <Link
-                  to="here"
+                  to="formulas/knots-to-mph"
                   className={`${buttonVariants({
                     variant: "link",
                   })}`}
