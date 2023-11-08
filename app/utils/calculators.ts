@@ -11,7 +11,6 @@ export function calculateCrosswind(
   windDirection: number,
   runwayDirection: number,
 ) {
-  console.log(windSpeed, windDirection, runwayDirection);
   // Calculate the angle between the wind and the runway
   const angleDifference = windDirection - runwayDirection;
 

@@ -5,6 +5,7 @@ import {
   Links,
   LiveReload,
   Meta,
+  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -29,6 +30,58 @@ export const links: LinksFunction = () => {
     ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   ].filter(Boolean);
 };
+
+type Formula = {
+  name: string;
+  href: string;
+};
+
+const formulas: Formula[] = [
+  {
+    name: "Crosswind Calculator",
+    href: "/formulas/crosswind",
+  },
+  {
+    name: "Headwind Calculator",
+    href: "/formulas/headwind",
+  },
+  {
+    name: "Rate of Climb Calculator",
+    href: "/formulas/roc",
+  },
+  {
+    name: "Turn Radius Calculator",
+    href: "/formulas/turn-radius",
+  },
+  {
+    name: "Turn Rate Calculator",
+    href: "/formulas/turn-rate",
+  },
+  {
+    name: "Standard Rate Turn Calculator",
+    href: "/formulas/standard-rate-turn",
+  },
+  {
+    name: "Lat Long format converter",
+    href: "/formulas/lat-lon-format",
+  },
+  {
+    name: "Lift Equation Calculator",
+    href: "/formulas/lift",
+  },
+  {
+    name: "Knots to MPH Converter",
+    href: "/formulas/knots-to-mph",
+  },
+  {
+    name: "Knots to Meters Per Second Converter",
+    href: "/formulas/knots-to-mps",
+  },
+  {
+    name: "Knots to KPH Converter",
+    href: "/formulas/knots-to-kph",
+  },
+];
 
 function Document({ children }: { children: React.ReactNode }) {
   return (
@@ -68,32 +121,32 @@ export default function App() {
         </div>
       </header>
       <section className="w-full py-6 md:py-12 lg:py-16">
-        <div className="container grid grid-cols-1 items-start justify-center gap-4 px-4 text-center md:grid-cols-3 md:px-6 lg:gap-10">
-          <aside className="h-[80vh] space-y-2 overflow-auto rounded-lg bg-white p-4 shadow-md dark:bg-zinc-800 md:col-span-1">
+        <div className="container grid grid-cols-1 items-start justify-center gap-4 px-4 md:grid-cols-3 md:px-6 lg:gap-10">
+          <aside className="h-[80vh] space-y-2 overflow-auto rounded-lg bg-white p-4 text-center shadow-md dark:bg-zinc-800 md:col-span-1">
             <h3 className="text-xl font-bold tracking-tighter sm:text-2xl md:text-3xl">
               Formulas
             </h3>
             <ul className="space-y-2">
-              <li>
-                <Link
-                  to="formulas/crosswind"
-                  className={`${buttonVariants({
-                    variant: "link",
-                  })} bg-blue-200 dark:bg-blue-700`}
-                >
-                  Crosswind Calculator
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="formulas/knots-to-mph"
-                  className={`${buttonVariants({
-                    variant: "link",
-                  })}`}
-                >
-                  Knots to MPH Converter
-                </Link>
-              </li>
+              {formulas.map((formula) => (
+                <li key={formula.href}>
+                  <NavLink
+                    to={formula.href}
+                    className={({ isActive, isPending }) =>
+                      isPending
+                        ? "pending"
+                        : isActive
+                        ? `${buttonVariants({
+                            variant: "link",
+                          })} bg-blue-200 dark:bg-blue-700`
+                        : `${buttonVariants({
+                            variant: "link",
+                          })}`
+                    }
+                  >
+                    {formula.name}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </aside>
           <main className="space-y-8 md:col-span-2">
