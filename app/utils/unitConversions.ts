@@ -13,14 +13,19 @@ const MILES_TO_METERS = 1609.34;
 const DEGREES_TO_RADIANS = Math.PI / 180;
 const RADIANS_TO_DEGREES = 180 / Math.PI;
 
-export type SpeedUnit = "m/s" | "knots" | "mph" | "kph" | "fps" | "fpm";
-export type DirectionUnit = "degrees" | "radians";
-export type LengthUnit =
-  | "meters"
-  | "feet"
-  | "nauticalMiles"
-  | "kilometers"
-  | "miles";
+const SpeedUnits = ["m/s", "knots", "mph", "kph", "fps", "fpm"] as const;
+const DirectionUnits = ["degrees", "radians"] as const;
+const LengthUnits = [
+  "meters",
+  "feet",
+  "nauticalMiles",
+  "kilometers",
+  "miles",
+] as const;
+
+export type SpeedUnit = (typeof SpeedUnits)[number];
+export type DirectionUnit = (typeof DirectionUnits)[number];
+export type LengthUnit = (typeof LengthUnits)[number];
 
 // type MassUnit = "kilograms" | "pounds";
 // type TemperatureUnit = "celsius" | "fahrenheit";
@@ -31,6 +36,18 @@ export type ValueUnitPair<UnitType> = {
   value: number;
   unit: UnitType;
 };
+
+export function isSpeedUnit(unit: string): unit is SpeedUnit {
+  return (SpeedUnits as readonly string[]).includes(unit);
+}
+
+export function isDirectionUnit(unit: string): unit is DirectionUnit {
+  return (DirectionUnits as readonly string[]).includes(unit);
+}
+
+export function isLengthUnit(unit: string): unit is LengthUnit {
+  return (LengthUnits as readonly string[]).includes(unit);
+}
 
 export function convertToMetersPerSecond(speed: number, unit: SpeedUnit) {
   switch (unit) {

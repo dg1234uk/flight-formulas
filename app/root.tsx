@@ -70,18 +70,6 @@ const formulas: Formula[] = [
     href: "/formulas/lift",
   },
   {
-    name: "Knots to MPH Converter",
-    href: "/formulas/knots-to-mph",
-  },
-  {
-    name: "Knots to Meters Per Second Converter",
-    href: "/formulas/knots-to-mps",
-  },
-  {
-    name: "Knots to KPH Converter",
-    href: "/formulas/knots-to-kph",
-  },
-  {
     name: "Speed Unit Converter",
     href: "/formulas/speed-converter",
   },
@@ -93,6 +81,184 @@ const formulas: Formula[] = [
     name: "Angle Unit Converter",
     href: "/formulas/angle-converter",
   },
+  {
+    name: "Temperature Unit Converter",
+    href: "/formulas/temperature-converter",
+  },
+  {
+    name: "Pressure Unit Converter",
+    href: "/formulas/pressure-converter",
+  },
+  {
+    name: "Weight Unit Converter",
+    href: "/formulas/weight-converter",
+  },
+  {
+    name: "Volume Unit Converter",
+    href: "/formulas/volume-converter",
+  },
+  {
+    name: "Fuel Unit Converter",
+    href: "/formulas/fuel-converter",
+  },
+  {
+    name: "Density Altitude Calculator",
+    href: "/formulas/density-altitude",
+  },
+  {
+    name: "Pressure Altitude Calculator",
+    href: "/formulas/pressure-altitude",
+  },
+  {
+    name: "True Altitude Calculator",
+    href: "/formulas/true-altitude",
+  },
+  {
+    name: "True Airspeed Calculator",
+    href: "/formulas/true-airspeed",
+  },
+  {
+    name: "Mach Number Calculator",
+    href: "/formulas/mach-number",
+  },
+  {
+    name: "Wind Chill Calculator",
+    href: "/formulas/wind-chill",
+  },
+  {
+    name: "Dew Point Calculator",
+    href: "/formulas/dew-point",
+  },
+  {
+    name: "Humidity Calculator",
+    href: "/formulas/relative-humidity",
+  },
+  {
+    name: "Wind Component Calculator",
+    href: "/formulas/wind-component",
+  },
+  {
+    name: "Fuel Endurance Calculator",
+    href: "/formulas/fuel-endurance",
+  },
+  {
+    name: "Fuel Consumption Calculator",
+    href: "/formulas/fuel-consumption",
+  },
+  {
+    name: "Fuel Weight Calculator",
+    href: "/formulas/fuel-weight",
+  },
+  {
+    name: "Fuel Volume Calculator",
+    href: "/formulas/fuel-volume",
+  },
+  {
+    name: "Fuel Density Calculator",
+    href: "/formulas/fuel-density",
+  },
+  {
+    name: "Fuel Flow Calculator",
+    href: "/formulas/fuel-flow",
+  },
+  {
+    name: "Cloub base and freezing level calculator",
+    href: "/formulas/cloud-base",
+  },
+  {
+    name: "AquaPlanning Speed Calculator",
+    href: "/formulas/hydroplane-speed",
+    // Both rotating and non-rotating
+  },
+  {
+    name: "Heading and Ground Speed Calculator",
+    href: "/formulas/heading-and-ground-speed",
+  },
+  {
+    name: "Compass Heading Calculator",
+    href: "/formulas/compass-heading",
+  },
+  {
+    name: "Leg Time Calculator",
+    href: "/formulas/leg-time",
+  },
+  {
+    name: "Fuel Required Calculator",
+    href: "/formulas/fuel-required",
+  },
+  {
+    name: "EASA Fuel Policy Calculator",
+    href: "/formulas/easa-fuel-policy",
+  },
+  {
+    name: "Required Rate of Climb Calculator",
+    href: "/formulas/required-rate-of-climb",
+  },
+  {
+    name: "Specific Range Calculator",
+    href: "/formulas/specific-range",
+  },
+  {
+    name: "Pivotal Altitude Calculator",
+    href: "/formulas/pivotal-altitude",
+  },
+  {
+    name: "Top of Descent Calculator",
+    href: "/formulas/top-of-descent",
+  },
+  {
+    name: "Glide Distance Calculator",
+    href: "/formulas/glide-distance",
+  },
+  // Time calculator
+  // Time converter
+  // Time Zone converter
+  // Sunrise/Sunset calculator
+  // Moonrise/Moonset calculator
+  // Moon Phase calculator
+  // Standard Closing Angle calculator
+  // Miles per minute calculator (Speed factor)
+  // MDR
+  // Rules of Thumb article
+  // Point to Point article
+  // Holding Pattern entry calculator
+  // Approach Minimums calculator
+  // VDP calculator
+  // 8.33 kHz channel spacing calculator
+  // Temperature Error Correction calculator
+  // QFE, QNH, QNE, QFF calculator
+  // PLOG
+  // Corriolis Force calculator
+  // Departure calculator
+  // Convergency calculator
+  // Track Error Angle calculator
+  // Scale on a Mercator chart calculator
+  // Scale calculator
+  // Nautical Air Miles calculator
+  // Natutical Ground Miles calculator
+  // Gradient calculator (degrees, percent, ratio)
+  // Frequency Bands
+  // Wavelength calculator
+  // Max Transmission Range calculator
+  // Max unambiguous range calculator
+  // Min Range calculator
+  // Power, work, torque
+  // Specific Fuel Consumption
+  // EPR
+  // Piston Compression ratio
+  // Loads BEM - DOM - OM - ZFM - RM - TOM - LM
+  // Point of Equal Time
+  // Point of Safe Return
+  // Meeting MOCA
+  // Take off Alternate
+  // Planning Minimums
+  // Lift Equation
+  // Stall speed
+  // Drag, Lift, Thrust, Weight
+  // Propeller Efficiency
+  // Wing formulas, taper ratio, aspect ratio, sweep angle, etc
+  // Mass and balance calculator
+  // https://edwilliams.org/avform147.htm
 ];
 
 function Document({ children }: { children: React.ReactNode }) {

@@ -22,16 +22,41 @@ import type {
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
-import { convertSpeed } from "~/utils/unitConversions";
+import {
+  convertSpeed,
+  isDirectionUnit,
+  isSpeedUnit,
+} from "~/utils/unitConversions";
 
-function inputCheck(value: any, message?: string) {
+function isValidInput(value: any) {
   if (!value || typeof value !== "string") {
-    console.error(message || "An invariant failed");
+    return false;
   }
+  return true;
 }
+
+type ErrorsObject = {
+  formErrors: string[];
+  fieldErrors: {
+    [key: string]: string[];
+  };
+};
 
 export default function Crosswind() {
   const [crosswind, setCrosswind] = useState<number>();
+  const [errors, setErrors] = useState<ErrorsObject>();
+
+  const errorsObject = {
+    formErrors: [],
+    fieldErrors: {
+      windSpeed: Array<string>(),
+      runwayDirection: Array<string>(),
+      windDirection: Array<string>(),
+      windSpeedUnits: Array<string>(),
+      runwayDirectionUnits: Array<string>(),
+      windDirectionUnits: Array<string>(),
+    },
+  };
 
   function handleCalculate(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -63,24 +88,84 @@ export default function Crosswind() {
       runwayDirectionUnitsGroup[1] as HTMLSelectElement;
     const windDirectionUnits = windDirectionUnitsGroup[1] as HTMLSelectElement;
 
-    inputCheck(windSpeedInput.value, "Wind Speed required");
-    inputCheck(runwayDirectionInput.value, "Runway Direction required");
-    inputCheck(windDirectionInput.value, "Wind Direction required");
-    inputCheck(windSpeedUnits.value, "Wind Speed Units required");
-    inputCheck(runwayDirectionUnits.value, "Runway Direction Units required");
-    inputCheck(windDirectionUnits.value, "Wind Direction Units required");
+    if (!isValidInput(windSpeedInput.value)) {
+      errorsObject.fieldErrors.windSpeed.push("Wind Speed required");
+    }
+    if (isNaN(Number(windSpeedInput.value))) {
+      errorsObject.fieldErrors.windSpeed.push("Wind Speed must be a number");
+    }
+    if (!isValidInput(runwayDirectionInput.value)) {
+      errorsObject.fieldErrors.runwayDirection.push(
+        "Runway Direction required",
+      );
+    }
+    if (isNaN(Number(runwayDirectionInput.value))) {
+      errorsObject.fieldErrors.runwayDirection.push(
+        "Runway Direction must be a number",
+      );
+    }
+    if (!isValidInput(windDirectionInput.value)) {
+      errorsObject.fieldErrors.windDirection.push("Wind Direction required");
+    }
+    if (isNaN(Number(windDirectionInput.value))) {
+      errorsObject.fieldErrors.windDirection.push(
+        "Wind Direction must be a number",
+      );
+    }
+    if (!isValidInput(windSpeedUnits.value)) {
+      errorsObject.fieldErrors.windSpeedUnits.push("Wind Speed Units required");
+    }
+    if (!isSpeedUnit(windSpeedUnits.value)) {
+      errorsObject.fieldErrors.windSpeedUnits.push(
+        "Wind Speed Units must be a valid unit",
+      );
+    }
+
+    if (!isValidInput(runwayDirectionUnits.value)) {
+      errorsObject.fieldErrors.runwayDirectionUnits.push(
+        "Runway Direction Units required",
+      );
+    }
+    if (!isDirectionUnit(runwayDirectionUnits.value)) {
+      errorsObject.fieldErrors.runwayDirectionUnits.push(
+        "Runway Direction Units must be a valid unit",
+      );
+    }
+    if (!isValidInput(windDirectionUnits.value)) {
+      errorsObject.fieldErrors.windDirectionUnits.push(
+        "Wind Direction Units required",
+      );
+    }
+    if (!isDirectionUnit(windDirectionUnits.value)) {
+      errorsObject.fieldErrors.windDirectionUnits.push(
+        "Wind Direction Units must be a valid unit",
+      );
+    }
+
+    const hasErrors =
+      errorsObject.formErrors.length ||
+      Object.values(errorsObject.fieldErrors).some(
+        (fieldErrors) => fieldErrors.length,
+      );
+    if (hasErrors) {
+      setErrors(errorsObject);
+      setCrosswind(undefined);
+      return;
+    } else {
+      setErrors(undefined);
+    }
 
     const windSpeed: ValueUnitPair<SpeedUnit> = {
       value: Number(windSpeedInput.value),
-      unit: "knots",
+      unit: windSpeedUnits.value as SpeedUnit,
     };
     const runwayDirection: ValueUnitPair<DirectionUnit> = {
       value: Number(runwayDirectionInput.value),
-      unit: "degrees",
+      unit: runwayDirectionUnits.value as DirectionUnit,
     };
     const windDirection: ValueUnitPair<DirectionUnit> = {
       value: Number(windDirectionInput.value),
-      unit: "degrees",
+      unit: windDirectionUnits.value as DirectionUnit,
     };
 
     const xwind = calculateCrosswindWithUnits(
@@ -89,29 +174,21 @@ export default function Crosswind() {
       windDirection,
     );
 
-    // const windSpeed = Number(windSpeedInput.value);
-    // const runwayDirection = Number(runwayDirectionInput.value);
-    // const windDirection = Number(windDirectionInput.value);
-
-    // const windSpeedInMPS = convertToMetersPerSecond(windSpeed, "knots");
-    // const runwayDirectionInRadians = convertToRadians(runwayDirection);
-    // const windDirectionInRadians = convertToRadians(windDirection);
-
-    // const crosswindComponentInMPS = calculateCrosswind(
-    //   windSpeedInMPS,
-    //   windDirectionInRadians,
-    //   runwayDirectionInRadians,
-    // );
-
-    // const crosswindComponent = convertSpeed(
-    //   crosswindComponentInMPS,
-    //   "m/s",
-    //   "knots",
-    // );
-
     const crosswindComponent = convertSpeed(xwind.value, xwind.unit, "knots");
 
     setCrosswind(crosswindComponent);
+  }
+
+  function ErrorList({ errors }: { errors?: Array<string> | null }) {
+    return errors?.length ? (
+      <ul className="flex flex-col gap-1">
+        {errors.map((error, i) => (
+          <li key={i} className="text-[10px] text-red-500">
+            {error}
+          </li>
+        ))}
+      </ul>
+    ) : null;
   }
 
   return (
@@ -130,6 +207,7 @@ export default function Crosswind() {
                   type="number"
                   id="windSpeed"
                   name="windSpeed"
+                  aria-invalid="true"
                 />
                 <Select name="windSpeedUnits" defaultValue="knots">
                   <SelectTrigger id="windSpeedUnits" className="w-[180px]">
@@ -138,11 +216,12 @@ export default function Crosswind() {
                   <SelectContent>
                     <SelectItem value="knots">Knots</SelectItem>
                     <SelectItem value="mph">MPH</SelectItem>
-                    <SelectItem value="mps">MPS</SelectItem>
+                    <SelectItem value="m/s">m/s</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <p className="hidden text-sm text-red-600">Error</p>
+              <ErrorList errors={errors?.fieldErrors?.windSpeed} />
+              <ErrorList errors={errors?.fieldErrors?.windSpeedUnits} />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="runwayDirection">Runway Direction</Label>
@@ -166,6 +245,8 @@ export default function Crosswind() {
                   </SelectContent>
                 </Select>
               </div>
+              <ErrorList errors={errors?.fieldErrors?.runwayDirection} />
+              <ErrorList errors={errors?.fieldErrors?.runwayDirectionUnits} />
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="windDirection">Wind Direction</Label>
@@ -186,6 +267,8 @@ export default function Crosswind() {
                   </SelectContent>
                 </Select>
               </div>
+              <ErrorList errors={errors?.fieldErrors?.windDirection} />
+              <ErrorList errors={errors?.fieldErrors?.windDirectionUnits} />
             </div>
             <Button type="submit" variant="default">
               Calculate
