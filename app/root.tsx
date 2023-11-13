@@ -10,9 +10,12 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import fontStylesheetUrl from "./styles/mathfonts.css";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { GeneralErrorBoundary } from "./components/error-boundary";
 import { buttonVariants } from "./components/ui/button";
+// import pkg from "better-react-mathjax";
+// const { MathJaxContext } = pkg;
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,6 +29,7 @@ export const meta: MetaFunction = () => {
 
 export const links: LinksFunction = () => {
   return [
+    { rel: "stylesheet", href: fontStylesheetUrl },
     { rel: "stylesheet", href: tailwindStylesheetUrl },
     ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   ].filter(Boolean);

@@ -116,7 +116,69 @@ export default function Crosswind() {
     }
   }
 
-  console.log(crosswind);
+  const mathML = `
+  <math display="block">
+  <mrow>
+    <mi>c</mi>
+    <mi>r</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mi>s</mi>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mo>=</mo>
+    <mi>w</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mi>d</mi>
+    <mi>S</mi>
+    <mi>p</mi>
+    <mi>e</mi>
+    <mi>e</mi>
+    <mi>d</mi>
+    <mo>×</mo>
+    <mrow>
+      <mi>sin</mi>
+      <mo>⁡</mo>
+    </mrow>
+    <mrow>
+      <mo fence="true">(</mo>
+      <mi>w</mi>
+      <mi>i</mi>
+      <mi>n</mi>
+      <mi>d</mi>
+      <mi>D</mi>
+      <mi>i</mi>
+      <mi>r</mi>
+      <mi>e</mi>
+      <mi>c</mi>
+      <mi>t</mi>
+      <mi>i</mi>
+      <mi>o</mi>
+      <mi>n</mi>
+      <mo>−</mo>
+      <mi>r</mi>
+      <mi>u</mi>
+      <mi>n</mi>
+      <mi>w</mi>
+      <mi>a</mi>
+      <mi>y</mi>
+      <mi>D</mi>
+      <mi>i</mi>
+      <mi>r</mi>
+      <mi>e</mi>
+      <mi>c</mi>
+      <mi>t</mi>
+      <mi>i</mi>
+      <mi>o</mi>
+      <mi>n</mi>
+      <mo fence="true">)</mo>
+    </mrow>
+  </mrow>
+</math>
+`;
 
   return (
     <>
@@ -299,8 +361,11 @@ export default function Crosswind() {
               and wind direction.
             </P>
             <P>
-              The formula used is: Crosswind = Wind Speed * sin(Wind Direction -
-              Runway Direction).
+              The formula used is:
+              <div
+                className="mt-2"
+                dangerouslySetInnerHTML={{ __html: mathML }}
+              />
             </P>
           </article>
         </CardContent>
