@@ -15,7 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import type { SpeedUnit, ValueUnitPair } from "~/utils/unitConversions";
+import type {
+  DirectionUnit,
+  SpeedUnit,
+  ValueUnitPair,
+} from "~/utils/unitConversions";
 import { DirectionUnits, SpeedUnits } from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -29,6 +33,7 @@ import {
 } from "~/components/ui/form";
 import { useForm } from "react-hook-form";
 import { H3, P } from "~/components/ui/prose";
+import { calculateRateOfClimbWithUnits } from "~/utils/formulas/rateOfClimb";
 
 const RateOfClimbFormSchema = z.object({
   tas: z.number().min(0),
@@ -51,14 +56,41 @@ export default function RateOfClimb() {
 
   function handleCalculate(values: z.infer<typeof RateOfClimbFormSchema>) {
     console.log(values);
-    const roc: ValueUnitPair<SpeedUnit> = {
-      value: 0,
+    const tasUnitPair: ValueUnitPair<SpeedUnit> = {
+      value: values.tas,
       unit: values.tasUnits,
     };
-    setRoc(roc);
+    const fpaUnitPair: ValueUnitPair<DirectionUnit> = {
+      value: values.fpa,
+      unit: values.fpaUnits,
+    };
+
+    const rocUnitPair = calculateRateOfClimbWithUnits(tasUnitPair, fpaUnitPair);
+
+    setRoc(rocUnitPair);
   }
 
-  const rateOfClimbMathML = ``;
+  const rateOfClimbMathML = `
+  <math display="block">
+  <mrow>
+    <mi>R</mi>
+    <mi>O</mi>
+    <mi>C</mi>
+    <mo>=</mo>
+    <mi>T</mi>
+    <mi>A</mi>
+    <mi>S</mi>
+    <mo>×</mo>
+    <mi>cos</mi>
+    <mo fence="true">(</mo>
+      <mi>F</mi>
+      <mi>P</mi>
+      <mi>A</mi>
+    <mo fence="true">)</mo>
+    </mrow>
+  </mrow>
+</math>
+`;
 
   return (
     <>
