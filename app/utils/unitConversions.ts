@@ -2,6 +2,8 @@
 export const KNOTS_TO_METERS_PER_SECOND = 0.514444;
 const MPH_TO_METERS_PER_SECOND = 0.44704;
 const KPH_TO_METERS_PER_SECOND = 0.277778;
+const FPS_TO_METERS_PER_SECOND = 0.3048;
+const FPM_TO_METERS_PER_SECOND = 0.00508;
 
 // Length
 const FEET_TO_METERS = 0.3048;
@@ -59,6 +61,10 @@ export function convertToMetersPerSecond(speed: number, unit: SpeedUnit) {
       return speed * MPH_TO_METERS_PER_SECOND;
     case "kph":
       return speed * KPH_TO_METERS_PER_SECOND;
+    case "fps":
+      return speed * FPS_TO_METERS_PER_SECOND;
+    case "fpm":
+      return speed * FPM_TO_METERS_PER_SECOND;
     default:
       throw new Error("Invalid unit for conversion to meters per second.");
   }
@@ -74,6 +80,10 @@ export function convertFromMetersPerSecond(speed: number, unit: SpeedUnit) {
       return speed / MPH_TO_METERS_PER_SECOND;
     case "kph":
       return speed / KPH_TO_METERS_PER_SECOND;
+    case "fps":
+      return speed / FPS_TO_METERS_PER_SECOND;
+    case "fpm":
+      return speed / FPM_TO_METERS_PER_SECOND;
     default:
       throw new Error("Invalid unit for conversion from meters per second.");
   }
