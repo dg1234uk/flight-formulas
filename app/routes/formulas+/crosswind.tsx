@@ -116,7 +116,7 @@ export default function Crosswind() {
     }
   }
 
-  const mathML = `
+  const crosswindMathML = `
   <math display="block">
   <mrow>
     <mi>c</mi>
@@ -364,7 +364,7 @@ export default function Crosswind() {
               The formula used is:
               <div
                 className="mt-2"
-                dangerouslySetInnerHTML={{ __html: mathML }}
+                dangerouslySetInnerHTML={{ __html: crosswindMathML }}
               />
             </P>
           </article>
