@@ -345,8 +345,7 @@ export default function Crosswind() {
           <p className="w-full text-center text-lg font-semibold">
             Crosswind Component:{" "}
             <span className="text-blue-500 dark:text-blue-300">
-              {crosswind?.value?.toPrecision(3) ?? "N/A"}{" "}
-              {crosswind?.unit ?? null}
+              {crosswind?.value?.toFixed(3) ?? "N/A"} {crosswind?.unit ?? null}
             </span>
           </p>
         </CardFooter>
