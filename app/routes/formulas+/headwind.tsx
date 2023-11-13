@@ -148,7 +148,7 @@ export default function Headwind() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleCalculate)}
-              className="grid gap-4"
+              className="mx-auto grid max-w-lg gap-4"
             >
               <div className="flex w-full gap-2">
                 <FormField
