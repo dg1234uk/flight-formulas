@@ -31,30 +31,30 @@ export function calculateHeadwind(
 /**
  * Calculates the headwind component given the wind speed, wind direction, and runway direction.
  *
- * @param {ValueUnitPair<SpeedUnit>} windSpeedObj - The wind speed value and its unit.
- * @param {ValueUnitPair<DirectionUnit>} windDirectionObj - The wind direction value and its unit.
- * @param {ValueUnitPair<DirectionUnit>} runwayDirectionObj - The runway direction value and its unit.
+ * @param {ValueUnitPair<SpeedUnit>} windSpeedUnitPair - The wind speed value and its unit.
+ * @param {ValueUnitPair<DirectionUnit>} windDirectionUnitPair - The wind direction value and its unit.
+ * @param {ValueUnitPair<DirectionUnit>} runwayDirectionUnitPair - The runway direction value and its unit.
  *
  * @returns {ValueUnitPair<SpeedUnit>} The headwind component value in meters per second and its unit.
  */
 export function calculateHeadwindWithUnits(
-  windSpeedObj: ValueUnitPair<SpeedUnit>,
-  windDirectionObj: ValueUnitPair<DirectionUnit>,
-  runwayDirectionObj: ValueUnitPair<DirectionUnit>,
+  windSpeedUnitPair: ValueUnitPair<SpeedUnit>,
+  windDirectionUnitPair: ValueUnitPair<DirectionUnit>,
+  runwayDirectionUnitPair: ValueUnitPair<DirectionUnit>,
 ) {
   // Convert all inputs to the standard units using the object properties
   const windSpeedInMetersPerSecond = convertSpeed(
-    windSpeedObj.value,
-    windSpeedObj.unit,
+    windSpeedUnitPair.value,
+    windSpeedUnitPair.unit,
     "m/s",
   );
   const windDirectionInRadians = convertToRadians(
-    windDirectionObj.value,
-    windDirectionObj.unit,
+    windDirectionUnitPair.value,
+    windDirectionUnitPair.unit,
   );
   const runwayDirectionInRadians = convertToRadians(
-    runwayDirectionObj.value,
-    runwayDirectionObj.unit,
+    runwayDirectionUnitPair.value,
+    runwayDirectionUnitPair.unit,
   );
 
   // Calculate the headwind component
@@ -65,11 +65,11 @@ export function calculateHeadwindWithUnits(
   );
 
   // Package the result with the unit
-  const headwindComponent: ValueUnitPair<SpeedUnit> = {
+  const headwindUnitPair: ValueUnitPair<SpeedUnit> = {
     value: headwindComponentValue,
     unit: "m/s",
   };
 
   // Return the result object
-  return headwindComponent;
+  return headwindUnitPair;
 }
