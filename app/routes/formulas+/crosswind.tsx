@@ -291,7 +291,7 @@ export default function Crosswind() {
       </Card>
       <Card className="mt-8">
         <CardContent>
-          <article className="prose dark:prose-dark max-w-none text-center">
+          <article className="max-w-none text-center">
             <H3 className="mt-8">How the Crosswind Calculator Works</H3>
             <P>
               The crosswind calculator uses trigonometric functions to calculate
