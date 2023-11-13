@@ -119,25 +119,9 @@ export default function Crosswind() {
   const crosswindMathML = `
   <math display="block">
   <mrow>
-    <mi>c</mi>
-    <mi>r</mi>
-    <mi>o</mi>
-    <mi>s</mi>
-    <mi>s</mi>
-    <mi>w</mi>
-    <mi>i</mi>
-    <mi>n</mi>
-    <mi>d</mi>
+    <mi>Crosswind</mi>
     <mo>=</mo>
-    <mi>w</mi>
-    <mi>i</mi>
-    <mi>n</mi>
-    <mi>d</mi>
-    <mi>S</mi>
-    <mi>p</mi>
-    <mi>e</mi>
-    <mi>e</mi>
-    <mi>d</mi>
+    <mi>Wind Speed</mi>
     <mo>×</mo>
     <mrow>
       <mi>sin</mi>
@@ -145,35 +129,9 @@ export default function Crosswind() {
     </mrow>
     <mrow>
       <mo fence="true">(</mo>
-      <mi>w</mi>
-      <mi>i</mi>
-      <mi>n</mi>
-      <mi>d</mi>
-      <mi>D</mi>
-      <mi>i</mi>
-      <mi>r</mi>
-      <mi>e</mi>
-      <mi>c</mi>
-      <mi>t</mi>
-      <mi>i</mi>
-      <mi>o</mi>
-      <mi>n</mi>
+      <mi>Wind Direction</mi>
       <mo>−</mo>
-      <mi>r</mi>
-      <mi>u</mi>
-      <mi>n</mi>
-      <mi>w</mi>
-      <mi>a</mi>
-      <mi>y</mi>
-      <mi>D</mi>
-      <mi>i</mi>
-      <mi>r</mi>
-      <mi>e</mi>
-      <mi>c</mi>
-      <mi>t</mi>
-      <mi>i</mi>
-      <mi>o</mi>
-      <mi>n</mi>
+      <mi>Runway Direction</mi>
       <mo fence="true">)</mo>
     </mrow>
   </mrow>
@@ -355,16 +313,45 @@ export default function Crosswind() {
           <article className="max-w-none text-center">
             <H3 className="mt-8">How the Crosswind Calculator Works</H3>
             <P>
-              The crosswind calculator uses trigonometric functions to calculate
-              the crosswind component based on the wind speed, runway direction,
-              and wind direction.
+              The calculation of crosswind invloves determining the wind's
+              strength perpendicular to the aicraft's direction of travel or
+              runway orientation. This is known as the crosswind component.
             </P>
             <P>
-              The formula used is:
+              To calculate the crosswind component, two key variables are used:
+              wind speed and the angle difference between the aircraft's
+              direction (or runway orientation) and the wind direction.
+            </P>
+            <P>
+              <strong>Wind Speed</strong>: This is the speed at which the wind
+              is blowing, typically measured in knots, miles per hour (mph), or
+              meters per second (m/s).
+            </P>
+            <P>
+              <strong>Angle Difference</strong>: This is the angle between the
+              direction of the wind and the aircraft's direction of travel or
+              the runway heading. It's measured in degrees or radians.
+            </P>
+            <P>
+              <strong>Crosswind Component</strong>: is calculated using the
+              formula:
               <div
                 className="mt-2"
                 dangerouslySetInnerHTML={{ __html: crosswindMathML }}
               />
+            </P>
+            <P>
+              In this equation, the crosswind component is determined by
+              multiplying the wind speed by the sine of the angle difference.
+              The sine function calculates the portion of the wind speed that is
+              acting perpendicular to the aircraft's direction. This effectively
+              decomposes the wind speed into a component that directly
+              influences the aircraft laterally.
+            </P>
+            <P>
+              The resulting crosswind component is expressed in the same units
+              as the wind speed. For example, if the wind speed is in knots, the
+              crosswind component will be in knots.
             </P>
           </article>
         </CardContent>

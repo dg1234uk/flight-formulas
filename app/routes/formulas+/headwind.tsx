@@ -119,25 +119,9 @@ export default function Headwind() {
   const headwindMathML = `
   <math display="block">
   <mrow>
-    <mi>c</mi>
-    <mi>r</mi>
-    <mi>o</mi>
-    <mi>s</mi>
-    <mi>s</mi>
-    <mi>w</mi>
-    <mi>i</mi>
-    <mi>n</mi>
-    <mi>d</mi>
+    <mi>Headwind</mi>
     <mo>=</mo>
-    <mi>w</mi>
-    <mi>i</mi>
-    <mi>n</mi>
-    <mi>d</mi>
-    <mi>S</mi>
-    <mi>p</mi>
-    <mi>e</mi>
-    <mi>e</mi>
-    <mi>d</mi>
+    <mi>Wind Speed</mi>
     <mo>×</mo>
     <mrow>
       <mi>cos</mi>
@@ -145,35 +129,9 @@ export default function Headwind() {
     </mrow>
     <mrow>
       <mo fence="true">(</mo>
-      <mi>w</mi>
-      <mi>i</mi>
-      <mi>n</mi>
-      <mi>d</mi>
-      <mi>D</mi>
-      <mi>i</mi>
-      <mi>r</mi>
-      <mi>e</mi>
-      <mi>c</mi>
-      <mi>t</mi>
-      <mi>i</mi>
-      <mi>o</mi>
-      <mi>n</mi>
+      <mi>Wind Direction</mi>
       <mo>−</mo>
-      <mi>r</mi>
-      <mi>u</mi>
-      <mi>n</mi>
-      <mi>w</mi>
-      <mi>a</mi>
-      <mi>y</mi>
-      <mi>D</mi>
-      <mi>i</mi>
-      <mi>r</mi>
-      <mi>e</mi>
-      <mi>c</mi>
-      <mi>t</mi>
-      <mi>i</mi>
-      <mi>o</mi>
-      <mi>n</mi>
+      <mi>Runway Direction</mi>
       <mo fence="true">)</mo>
     </mrow>
   </mrow>
@@ -355,16 +313,45 @@ export default function Headwind() {
           <article className="max-w-none text-center">
             <H3 className="mt-8">How the Headwind Calculator Works</H3>
             <P>
-              The headwind calculator uses trigonometric functions to calculate
-              the headwind component based on the wind speed, runway direction,
-              and wind direction.
+              The calculation of headwind component invloves determining the
+              wind's strength parallel to the aicraft's direction of travel or
+              runway orientation.
             </P>
             <P>
-              The formula used is:
+              To calculate the headwind component, two key variables are used:
+              wind speed and the angle difference between the aircraft's
+              direction (or runway orientation) and the wind direction.
+            </P>
+            <P>
+              <strong>Wind Speed</strong>: This is the speed at which the wind
+              is blowing, typically measured in knots, miles per hour (mph), or
+              meters per second (m/s).
+            </P>
+            <P>
+              <strong>Angle Difference</strong>: This is the angle between the
+              direction of the wind and the aircraft's direction of travel or
+              the runway heading. It's measured in degrees or radians.
+            </P>
+            <P>
+              <strong>Headwind Component</strong>: is calculated using the
+              formula:
               <div
                 className="mt-2"
                 dangerouslySetInnerHTML={{ __html: headwindMathML }}
               />
+            </P>
+            <P>
+              In this equation, the headwind component is determined by
+              multiplying the wind speed by the cosine of the angle difference.
+              The cosine function is used to calculate the portion of the wind
+              speed that is acting parallel to the aircraft's direction. This
+              effectively decomposes the wind speed into a component that
+              directly influences the aircraft longitudinally.
+            </P>
+            <P>
+              The resulting headwind component is expressed in the same units as
+              the wind speed. For example, if the wind speed is in knots, the
+              headwind component will also be measured in knots.
             </P>
           </article>
         </CardContent>
