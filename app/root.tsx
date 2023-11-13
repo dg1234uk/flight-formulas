@@ -51,7 +51,7 @@ const formulas: Formula[] = [
   },
   {
     name: "Rate of Climb Calculator",
-    href: "/formulas/roc",
+    href: "/formulas/rate-of-climb",
   },
   {
     name: "Turn Radius Calculator",
