@@ -2,6 +2,8 @@
 export const KNOTS_TO_METERS_PER_SECOND = 0.514444;
 const MPH_TO_METERS_PER_SECOND = 0.44704;
 const KPH_TO_METERS_PER_SECOND = 0.277778;
+const FPS_TO_METERS_PER_SECOND = 0.3048;
+const FPM_TO_METERS_PER_SECOND = 0.00508;
 
 // Length
 const FEET_TO_METERS = 0.3048;
@@ -13,14 +15,19 @@ const MILES_TO_METERS = 1609.34;
 const DEGREES_TO_RADIANS = Math.PI / 180;
 const RADIANS_TO_DEGREES = 180 / Math.PI;
 
-export type SpeedUnit = "m/s" | "knots" | "mph" | "kph" | "fps" | "fpm";
-export type DirectionUnit = "degrees" | "radians";
-export type LengthUnit =
-  | "meters"
-  | "feet"
-  | "nauticalMiles"
-  | "kilometers"
-  | "miles";
+export const SpeedUnits = ["m/s", "knots", "mph", "kph", "fps", "fpm"] as const;
+export const DirectionUnits = ["degrees", "radians"] as const;
+export const LengthUnits = [
+  "meters",
+  "feet",
+  "nauticalMiles",
+  "kilometers",
+  "miles",
+] as const;
+
+export type SpeedUnit = (typeof SpeedUnits)[number];
+export type DirectionUnit = (typeof DirectionUnits)[number];
+export type LengthUnit = (typeof LengthUnits)[number];
 
 // type MassUnit = "kilograms" | "pounds";
 // type TemperatureUnit = "celsius" | "fahrenheit";
@@ -32,6 +39,18 @@ export type ValueUnitPair<UnitType> = {
   unit: UnitType;
 };
 
+export function isSpeedUnit(unit: string): unit is SpeedUnit {
+  return (SpeedUnits as readonly string[]).includes(unit);
+}
+
+export function isDirectionUnit(unit: string): unit is DirectionUnit {
+  return (DirectionUnits as readonly string[]).includes(unit);
+}
+
+export function isLengthUnit(unit: string): unit is LengthUnit {
+  return (LengthUnits as readonly string[]).includes(unit);
+}
+
 export function convertToMetersPerSecond(speed: number, unit: SpeedUnit) {
   switch (unit) {
     case "m/s":
@@ -42,6 +61,10 @@ export function convertToMetersPerSecond(speed: number, unit: SpeedUnit) {
       return speed * MPH_TO_METERS_PER_SECOND;
     case "kph":
       return speed * KPH_TO_METERS_PER_SECOND;
+    case "fps":
+      return speed * FPS_TO_METERS_PER_SECOND;
+    case "fpm":
+      return speed * FPM_TO_METERS_PER_SECOND;
     default:
       throw new Error("Invalid unit for conversion to meters per second.");
   }
@@ -57,6 +80,10 @@ export function convertFromMetersPerSecond(speed: number, unit: SpeedUnit) {
       return speed / MPH_TO_METERS_PER_SECOND;
     case "kph":
       return speed / KPH_TO_METERS_PER_SECOND;
+    case "fps":
+      return speed / FPS_TO_METERS_PER_SECOND;
+    case "fpm":
+      return speed / FPM_TO_METERS_PER_SECOND;
     default:
       throw new Error("Invalid unit for conversion from meters per second.");
   }

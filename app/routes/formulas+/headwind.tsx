@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { calculateCrosswindWithUnits } from "~/utils/formulas/crosswind";
 import type {
   DirectionUnit,
   SpeedUnit,
@@ -40,8 +39,9 @@ import {
 } from "~/components/ui/form";
 import { useForm } from "react-hook-form";
 import { H3, P } from "~/components/ui/prose";
+import { calculateHeadwindWithUnits } from "~/utils/formulas/headwind";
 
-const crosswindFormSchema = z.object({
+const headwindFormSchema = z.object({
   windSpeed: z.number().min(0),
   windSpeedUnits: z.enum(SpeedUnits),
   runwayDirection: z.number().min(0).max(360),
@@ -50,10 +50,10 @@ const crosswindFormSchema = z.object({
   windDirectionUnits: z.enum(DirectionUnits),
 });
 
-export default function Crosswind() {
-  const [crosswind, setCrosswind] = useState<ValueUnitPair<SpeedUnit>>();
-  const form = useForm<z.infer<typeof crosswindFormSchema>>({
-    resolver: zodResolver(crosswindFormSchema),
+export default function Headwind() {
+  const [headwind, setHeadwind] = useState<ValueUnitPair<SpeedUnit>>();
+  const form = useForm<z.infer<typeof headwindFormSchema>>({
+    resolver: zodResolver(headwindFormSchema),
     defaultValues: {
       windSpeed: 0,
       windSpeedUnits: "knots",
@@ -64,7 +64,7 @@ export default function Crosswind() {
     },
   });
 
-  function handleCalculate(values: z.infer<typeof crosswindFormSchema>) {
+  function handleCalculate(values: z.infer<typeof headwindFormSchema>) {
     const {
       windSpeed,
       windSpeedUnits,
@@ -93,38 +93,38 @@ export default function Crosswind() {
         unit: windDirectionUnits,
       };
 
-      const xwind = calculateCrosswindWithUnits(
+      const xwind = calculateHeadwindWithUnits(
         windSpeedPair,
         runwayDirectionPair,
         windDirectionPair,
       );
 
-      const crosswindUnits = windSpeedPair.unit;
-      const crosswindComponent = convertSpeed(
+      const headwindUnits = windSpeedPair.unit;
+      const headwindComponent = convertSpeed(
         xwind.value,
         xwind.unit,
-        crosswindUnits,
+        headwindUnits,
       );
 
-      console.log(Math.round(crosswindComponent));
-      setCrosswind({
-        value: crosswindComponent,
-        unit: crosswindUnits,
+      console.log(Math.round(headwindComponent));
+      setHeadwind({
+        value: headwindComponent,
+        unit: headwindUnits,
       });
     } else {
       console.error("Invalid units");
     }
   }
 
-  const crosswindMathML = `
+  const headwindMathML = `
   <math display="block">
   <mrow>
-    <mi>Crosswind</mi>
+    <mi>Headwind</mi>
     <mo>=</mo>
     <mi>Wind Speed</mi>
     <mo>×</mo>
     <mrow>
-      <mi>sin</mi>
+      <mi>cos</mi>
       <mo>⁡</mo>
     </mrow>
     <mrow>
@@ -142,7 +142,7 @@ export default function Crosswind() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="font-medium">Crosswind Calculator</CardTitle>
+          <CardTitle className="font-medium">Headwind Calculator</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -301,9 +301,9 @@ export default function Crosswind() {
         </CardContent>
         <CardFooter>
           <p className="w-full text-center text-lg font-semibold">
-            Crosswind Component:{" "}
+            Headwind Component:{" "}
             <span className="text-blue-500 dark:text-blue-300">
-              {crosswind?.value?.toFixed(3) ?? "N/A"} {crosswind?.unit ?? null}
+              {headwind?.value?.toFixed(3) ?? "N/A"} {headwind?.unit ?? null}
             </span>
           </p>
         </CardFooter>
@@ -311,14 +311,14 @@ export default function Crosswind() {
       <Card className="mt-8">
         <CardContent>
           <article className="max-w-none text-center">
-            <H3 className="mt-8">How the Crosswind Calculator Works</H3>
+            <H3 className="mt-8">How the Headwind Calculator Works</H3>
             <P>
-              The calculation of crosswind invloves determining the wind's
-              strength perpendicular to the aicraft's direction of travel or
-              runway orientation. This is known as the crosswind component.
+              The calculation of headwind component invloves determining the
+              wind's strength parallel to the aicraft's direction of travel or
+              runway orientation.
             </P>
             <P>
-              To calculate the crosswind component, two key variables are used:
+              To calculate the headwind component, two key variables are used:
               wind speed and the angle difference between the aircraft's
               direction (or runway orientation) and the wind direction.
             </P>
@@ -333,25 +333,25 @@ export default function Crosswind() {
               the runway heading. It's measured in degrees or radians.
             </P>
             <P>
-              <strong>Crosswind Component</strong>: is calculated using the
+              <strong>Headwind Component</strong>: is calculated using the
               formula:
               <div
                 className="mt-2"
-                dangerouslySetInnerHTML={{ __html: crosswindMathML }}
+                dangerouslySetInnerHTML={{ __html: headwindMathML }}
               />
             </P>
             <P>
-              In this equation, the crosswind component is determined by
-              multiplying the wind speed by the sine of the angle difference.
-              The sine function calculates the portion of the wind speed that is
-              acting perpendicular to the aircraft's direction. This effectively
-              decomposes the wind speed into a component that directly
-              influences the aircraft laterally.
+              In this equation, the headwind component is determined by
+              multiplying the wind speed by the cosine of the angle difference.
+              The cosine function is used to calculate the portion of the wind
+              speed that is acting parallel to the aircraft's direction. This
+              effectively decomposes the wind speed into a component that
+              directly influences the aircraft longitudinally.
             </P>
             <P>
-              The resulting crosswind component is expressed in the same units
-              as the wind speed. For example, if the wind speed is in knots, the
-              crosswind component will be in knots.
+              The resulting headwind component is expressed in the same units as
+              the wind speed. For example, if the wind speed is in knots, the
+              headwind component will also be measured in knots.
             </P>
           </article>
         </CardContent>
