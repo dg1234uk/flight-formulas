@@ -21,8 +21,13 @@ import type {
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
-import { convertSpeed } from "~/utils/unitConversions";
-import { useForm } from "react-hook-form";
+import {
+  DirectionUnits,
+  SpeedUnits,
+  convertSpeed,
+  isDirectionUnit,
+  isSpeedUnit,
+} from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -33,18 +38,19 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { useForm } from "react-hook-form";
 
 const formSchema = z.object({
-  windSpeed: z.number().min(0, { message: "Required" }),
-  windSpeedUnits: z.string().min(1, { message: "Required" }),
-  runwayDirection: z.number().min(0, { message: "Required" }),
-  runwayDirectionUnits: z.string().min(1, { message: "Required" }),
-  windDirection: z.number().min(0, { message: "Required" }),
-  windDirectionUnits: z.string().min(1, { message: "Required" }),
+  windSpeed: z.number().min(0),
+  windSpeedUnits: z.enum(SpeedUnits),
+  runwayDirection: z.number().min(0).max(360),
+  runwayDirectionUnits: z.enum(DirectionUnits),
+  windDirection: z.number().min(0).max(360),
+  windDirectionUnits: z.enum(DirectionUnits),
 });
 
 export default function Crosswind() {
-  const [crosswind, setCrosswind] = useState<number>();
+  const [crosswind, setCrosswind] = useState<ValueUnitPair<SpeedUnit>>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,7 +64,6 @@ export default function Crosswind() {
   });
 
   function handleCalculate(values: z.infer<typeof formSchema>) {
-    console.log(values);
     const {
       windSpeed,
       windSpeedUnits,
@@ -68,30 +73,49 @@ export default function Crosswind() {
       windDirectionUnits,
     } = values;
 
-    const windSpeedPair: ValueUnitPair<SpeedUnit> = {
-      value: windSpeed,
-      unit: windSpeedUnits as SpeedUnit,
-    };
-    const runwayDirectionPair: ValueUnitPair<DirectionUnit> = {
-      value: Number(runwayDirection),
-      unit: runwayDirectionUnits as DirectionUnit,
-    };
-    const windDirectionPair: ValueUnitPair<DirectionUnit> = {
-      value: Number(windDirection),
-      unit: windDirectionUnits as DirectionUnit,
-    };
+    if (
+      isSpeedUnit(windSpeedUnits) &&
+      isDirectionUnit(runwayDirectionUnits) &&
+      isDirectionUnit(windDirectionUnits)
+    ) {
+      const windSpeedPair: ValueUnitPair<SpeedUnit> = {
+        value: windSpeed,
+        unit: windSpeedUnits,
+      };
 
-    const xwind = calculateCrosswindWithUnits(
-      windSpeedPair,
-      runwayDirectionPair,
-      windDirectionPair,
-    );
+      const runwayDirectionPair: ValueUnitPair<DirectionUnit> = {
+        value: Number(runwayDirection),
+        unit: runwayDirectionUnits,
+      };
+      const windDirectionPair: ValueUnitPair<DirectionUnit> = {
+        value: Number(windDirection),
+        unit: windDirectionUnits,
+      };
 
-    const crosswindComponent = convertSpeed(xwind.value, xwind.unit, "knots");
+      const xwind = calculateCrosswindWithUnits(
+        windSpeedPair,
+        runwayDirectionPair,
+        windDirectionPair,
+      );
 
-    setCrosswind(crosswindComponent);
-    console.log(crosswindComponent);
+      const crosswindUnits = windSpeedPair.unit;
+      const crosswindComponent = convertSpeed(
+        xwind.value,
+        xwind.unit,
+        crosswindUnits,
+      );
+
+      console.log(Math.round(crosswindComponent));
+      setCrosswind({
+        value: crosswindComponent,
+        unit: crosswindUnits,
+      });
+    } else {
+      console.error("Invalid units");
+    }
   }
+
+  console.log(crosswind);
 
   return (
     <>
@@ -149,6 +173,7 @@ export default function Crosswind() {
                           </SelectContent>
                         </Select>
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -206,7 +231,7 @@ export default function Crosswind() {
                   name="windDirection"
                   render={({ field }) => (
                     <FormItem className="grid flex-grow gap-1.5">
-                      <FormLabel>Runway Direction</FormLabel>
+                      <FormLabel>Wind Direction</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
@@ -228,7 +253,7 @@ export default function Crosswind() {
                   name="windDirectionUnits"
                   render={({ field }) => (
                     <FormItem className="grid w-[180px] gap-1.5">
-                      <FormLabel>Runway Direction Units</FormLabel>
+                      <FormLabel>Wind Direction Units</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
@@ -258,7 +283,7 @@ export default function Crosswind() {
           <p className="w-full text-center text-lg font-semibold">
             Crosswind Component:{" "}
             <span className="text-blue-500 dark:text-blue-300">
-              {crosswind ? crosswind : "N/A"}
+              {crosswind?.value ?? "N/A"} {crosswind?.unit ?? null}
             </span>
           </p>
         </CardFooter>

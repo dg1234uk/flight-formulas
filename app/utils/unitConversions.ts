@@ -13,9 +13,9 @@ const MILES_TO_METERS = 1609.34;
 const DEGREES_TO_RADIANS = Math.PI / 180;
 const RADIANS_TO_DEGREES = 180 / Math.PI;
 
-const SpeedUnits = ["m/s", "knots", "mph", "kph", "fps", "fpm"] as const;
-const DirectionUnits = ["degrees", "radians"] as const;
-const LengthUnits = [
+export const SpeedUnits = ["m/s", "knots", "mph", "kph", "fps", "fpm"] as const;
+export const DirectionUnits = ["degrees", "radians"] as const;
+export const LengthUnits = [
   "meters",
   "feet",
   "nauticalMiles",
