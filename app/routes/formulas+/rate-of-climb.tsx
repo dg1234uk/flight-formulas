@@ -20,7 +20,11 @@ import type {
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
-import { DirectionUnits, SpeedUnits } from "~/utils/unitConversions";
+import {
+  DirectionUnits,
+  SpeedUnits,
+  convertSpeed,
+} from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -67,7 +71,19 @@ export default function RateOfClimb() {
 
     const rocUnitPair = calculateRateOfClimbWithUnits(tasUnitPair, fpaUnitPair);
 
-    setRoc(rocUnitPair);
+    const resultUnit = "fpm";
+    const rocInFPM = convertSpeed(
+      rocUnitPair.value,
+      rocUnitPair.unit,
+      resultUnit,
+    );
+
+    const convertedRocUnitPair: ValueUnitPair<SpeedUnit> = {
+      value: rocInFPM,
+      unit: resultUnit,
+    };
+
+    setRoc(convertedRocUnitPair);
   }
 
   const rateOfClimbMathML = `
@@ -220,13 +236,40 @@ export default function RateOfClimb() {
         <CardContent>
           <article className="max-w-none text-center">
             <H3 className="mt-8">How the Rate of Climb Calculator Works</H3>
-            <P>TBC</P>
             <P>
-              The formula used is:
+              Calculating an aircraft's rate of climb involves two key
+              variables: true airspeed (TAS) and flight path angle (FPA).
+            </P>
+
+            <P>
+              <strong>True Airspeed (TAS)</strong> is the aircraft's speed
+              relative to the air, usually measured in knots or meters per
+              second.
+            </P>
+
+            <P>
+              <strong>Flight Path Angle (FPA)</strong> is the angle between the
+              horizon and the aircraft's path, typically expressed in radians or
+              degrees.
+            </P>
+
+            <P>
+              <strong>Rate of Climb (ROC)</strong> is calculated using the
+              formula:
               <div
                 className="mt-2"
                 dangerouslySetInnerHTML={{ __html: rateOfClimbMathML }}
               />
+            </P>
+
+            <P>
+              In this equation, the ROC is determined by multiplying TAS by the
+              sine of FPA. The sine function derives the vertical component of
+              the aircraft's velocity. As a result, without conversion, this
+              formula gives the ROC in the same units as TAS (e.g. TAS in knots
+              would give ROC in nautical miles per hour). Commonly rate of climb
+              is expressed in either feet per minute (fpm) or meters per second
+              (m/s).
             </P>
           </article>
         </CardContent>
