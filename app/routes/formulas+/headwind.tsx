@@ -343,7 +343,7 @@ export default function Headwind() {
         </CardContent>
         <CardFooter>
           <p className="w-full text-center text-lg font-semibold">
-            Crosswind Component:{" "}
+            Headwind Component:{" "}
             <span className="text-blue-500 dark:text-blue-300">
               {headwind?.value?.toFixed(3) ?? "N/A"} {headwind?.unit ?? null}
             </span>
