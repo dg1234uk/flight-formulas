@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -22,173 +21,76 @@ import type {
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
+import { convertSpeed } from "~/utils/unitConversions";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
-  convertSpeed,
-  isDirectionUnit,
-  isSpeedUnit,
-} from "~/utils/unitConversions";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
 
-function isValidInput(value: any) {
-  if (!value || typeof value !== "string") {
-    return false;
-  }
-  return true;
-}
-
-type ErrorsObject = {
-  formErrors: string[];
-  fieldErrors: {
-    [key: string]: string[];
-  };
-};
+const formSchema = z.object({
+  windSpeed: z.number().min(0, { message: "Required" }),
+  windSpeedUnits: z.string().min(1, { message: "Required" }),
+  runwayDirection: z.number().min(0, { message: "Required" }),
+  runwayDirectionUnits: z.string().min(1, { message: "Required" }),
+  windDirection: z.number().min(0, { message: "Required" }),
+  windDirectionUnits: z.string().min(1, { message: "Required" }),
+});
 
 export default function Crosswind() {
   const [crosswind, setCrosswind] = useState<number>();
-  const [errors, setErrors] = useState<ErrorsObject>();
-
-  const errorsObject = {
-    formErrors: [],
-    fieldErrors: {
-      windSpeed: Array<string>(),
-      runwayDirection: Array<string>(),
-      windDirection: Array<string>(),
-      windSpeedUnits: Array<string>(),
-      runwayDirectionUnits: Array<string>(),
-      windDirectionUnits: Array<string>(),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      windSpeed: 0,
+      windSpeedUnits: "knots",
+      runwayDirection: 0,
+      runwayDirectionUnits: "degrees",
+      windDirection: 0,
+      windDirectionUnits: "degrees",
     },
-  };
+  });
 
-  function handleCalculate(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  function handleCalculate(values: z.infer<typeof formSchema>) {
+    console.log(values);
+    const {
+      windSpeed,
+      windSpeedUnits,
+      runwayDirection,
+      runwayDirectionUnits,
+      windDirection,
+      windDirectionUnits,
+    } = values;
 
-    const form = event.currentTarget;
-
-    const windSpeedInput = form.elements.namedItem(
-      "windSpeed",
-    ) as HTMLInputElement;
-    const runwayDirectionInput = form.elements.namedItem(
-      "runwayDirection",
-    ) as HTMLInputElement;
-    const windDirectionInput = form.elements.namedItem(
-      "windDirection",
-    ) as HTMLInputElement;
-
-    const windSpeedUnitsGroup = form.elements.namedItem(
-      "windSpeedUnits",
-    ) as RadioNodeList;
-    const runwayDirectionUnitsGroup = form.elements.namedItem(
-      "runwayDirectionUnits",
-    ) as RadioNodeList;
-    const windDirectionUnitsGroup = form.elements.namedItem(
-      "windDirectionUnits",
-    ) as RadioNodeList;
-
-    const windSpeedUnits = windSpeedUnitsGroup[1] as HTMLSelectElement;
-    const runwayDirectionUnits =
-      runwayDirectionUnitsGroup[1] as HTMLSelectElement;
-    const windDirectionUnits = windDirectionUnitsGroup[1] as HTMLSelectElement;
-
-    if (!isValidInput(windSpeedInput.value)) {
-      errorsObject.fieldErrors.windSpeed.push("Wind Speed required");
-    }
-    if (isNaN(Number(windSpeedInput.value))) {
-      errorsObject.fieldErrors.windSpeed.push("Wind Speed must be a number");
-    }
-    if (!isValidInput(runwayDirectionInput.value)) {
-      errorsObject.fieldErrors.runwayDirection.push(
-        "Runway Direction required",
-      );
-    }
-    if (isNaN(Number(runwayDirectionInput.value))) {
-      errorsObject.fieldErrors.runwayDirection.push(
-        "Runway Direction must be a number",
-      );
-    }
-    if (!isValidInput(windDirectionInput.value)) {
-      errorsObject.fieldErrors.windDirection.push("Wind Direction required");
-    }
-    if (isNaN(Number(windDirectionInput.value))) {
-      errorsObject.fieldErrors.windDirection.push(
-        "Wind Direction must be a number",
-      );
-    }
-    if (!isValidInput(windSpeedUnits.value)) {
-      errorsObject.fieldErrors.windSpeedUnits.push("Wind Speed Units required");
-    }
-    if (!isSpeedUnit(windSpeedUnits.value)) {
-      errorsObject.fieldErrors.windSpeedUnits.push(
-        "Wind Speed Units must be a valid unit",
-      );
-    }
-
-    if (!isValidInput(runwayDirectionUnits.value)) {
-      errorsObject.fieldErrors.runwayDirectionUnits.push(
-        "Runway Direction Units required",
-      );
-    }
-    if (!isDirectionUnit(runwayDirectionUnits.value)) {
-      errorsObject.fieldErrors.runwayDirectionUnits.push(
-        "Runway Direction Units must be a valid unit",
-      );
-    }
-    if (!isValidInput(windDirectionUnits.value)) {
-      errorsObject.fieldErrors.windDirectionUnits.push(
-        "Wind Direction Units required",
-      );
-    }
-    if (!isDirectionUnit(windDirectionUnits.value)) {
-      errorsObject.fieldErrors.windDirectionUnits.push(
-        "Wind Direction Units must be a valid unit",
-      );
-    }
-
-    const hasErrors =
-      errorsObject.formErrors.length ||
-      Object.values(errorsObject.fieldErrors).some(
-        (fieldErrors) => fieldErrors.length,
-      );
-    if (hasErrors) {
-      setErrors(errorsObject);
-      setCrosswind(undefined);
-      return;
-    } else {
-      setErrors(undefined);
-    }
-
-    const windSpeed: ValueUnitPair<SpeedUnit> = {
-      value: Number(windSpeedInput.value),
-      unit: windSpeedUnits.value as SpeedUnit,
+    const windSpeedPair: ValueUnitPair<SpeedUnit> = {
+      value: windSpeed,
+      unit: windSpeedUnits as SpeedUnit,
     };
-    const runwayDirection: ValueUnitPair<DirectionUnit> = {
-      value: Number(runwayDirectionInput.value),
-      unit: runwayDirectionUnits.value as DirectionUnit,
+    const runwayDirectionPair: ValueUnitPair<DirectionUnit> = {
+      value: Number(runwayDirection),
+      unit: runwayDirectionUnits as DirectionUnit,
     };
-    const windDirection: ValueUnitPair<DirectionUnit> = {
-      value: Number(windDirectionInput.value),
-      unit: windDirectionUnits.value as DirectionUnit,
+    const windDirectionPair: ValueUnitPair<DirectionUnit> = {
+      value: Number(windDirection),
+      unit: windDirectionUnits as DirectionUnit,
     };
 
     const xwind = calculateCrosswindWithUnits(
-      windSpeed,
-      runwayDirection,
-      windDirection,
+      windSpeedPair,
+      runwayDirectionPair,
+      windDirectionPair,
     );
 
     const crosswindComponent = convertSpeed(xwind.value, xwind.unit, "knots");
 
     setCrosswind(crosswindComponent);
-  }
-
-  function ErrorList({ errors }: { errors?: Array<string> | null }) {
-    return errors?.length ? (
-      <ul className="flex flex-col gap-1">
-        {errors.map((error, i) => (
-          <li key={i} className="text-[10px] text-red-500">
-            {error}
-          </li>
-        ))}
-      </ul>
-    ) : null;
+    console.log(crosswindComponent);
   }
 
   return (
@@ -198,82 +100,159 @@ export default function Crosswind() {
           <CardTitle className="font-medium">Crosswind Calculator</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleCalculate} className="grid gap-4">
-            <div className="grid gap-1.5">
-              <Label htmlFor="windSpeed">Wind Speed</Label>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Wind speed (knots)"
-                  type="number"
-                  id="windSpeed"
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleCalculate)}
+              className="grid gap-4"
+            >
+              <div className="flex w-full gap-2">
+                <FormField
+                  control={form.control}
                   name="windSpeed"
-                  aria-invalid="true"
+                  render={({ field }) => (
+                    <FormItem className="grid flex-grow gap-1.5">
+                      <FormLabel>Wind Speed</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Wind speed (knots)"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const numberValue =
+                              value === "" ? undefined : Number(value);
+                            field.onChange(numberValue);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Select name="windSpeedUnits" defaultValue="knots">
-                  <SelectTrigger id="windSpeedUnits" className="w-[180px]">
-                    <SelectValue placeholder="Units" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="knots">Knots</SelectItem>
-                    <SelectItem value="mph">MPH</SelectItem>
-                    <SelectItem value="m/s">m/s</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormField
+                  control={form.control}
+                  name="windSpeedUnits"
+                  render={({ field }) => (
+                    <FormItem className="grid w-[180px] gap-1.5">
+                      <FormLabel>Wind Speed Units</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger id="windSpeedUnits">
+                            <SelectValue placeholder="Units" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="knots">Knots</SelectItem>
+                            <SelectItem value="mph">MPH</SelectItem>
+                            <SelectItem value="m/s">m/s</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
-              <ErrorList errors={errors?.fieldErrors?.windSpeed} />
-              <ErrorList errors={errors?.fieldErrors?.windSpeedUnits} />
-            </div>
-            <div className="grid gap-1.5">
-              <Label htmlFor="runwayDirection">Runway Direction</Label>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Runway direction (degrees)"
-                  type="number"
+              <div className="flex w-full gap-2">
+                <FormField
+                  control={form.control}
                   name="runwayDirection"
-                  id="runwayDirection"
+                  render={({ field }) => (
+                    <FormItem className="grid flex-grow gap-1.5">
+                      <FormLabel>Runway Direction</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Runway direction (degrees)"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const numberValue =
+                              value === "" ? undefined : Number(value);
+                            field.onChange(numberValue);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Select name="runwayDirectionUnits" defaultValue="degrees">
-                  <SelectTrigger
-                    id="runwayDirectionUnits"
-                    className="w-[180px]"
-                  >
-                    <SelectValue placeholder="Units" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="degrees">Degrees</SelectItem>
-                    <SelectItem value="radians">Radians</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormField
+                  control={form.control}
+                  name="runwayDirectionUnits"
+                  render={({ field }) => (
+                    <FormItem className="grid w-[180px] gap-1.5">
+                      <FormLabel>Runway Direction Units</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger id="runwayDirectionUnits">
+                            <SelectValue placeholder="Units" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="degrees">Degrees</SelectItem>
+                            <SelectItem value="radians">Radians</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
-              <ErrorList errors={errors?.fieldErrors?.runwayDirection} />
-              <ErrorList errors={errors?.fieldErrors?.runwayDirectionUnits} />
-            </div>
-            <div className="grid gap-1.5">
-              <Label htmlFor="windDirection">Wind Direction</Label>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Wind direction (degrees)"
-                  type="number"
+              <div className="flex w-full gap-2">
+                <FormField
+                  control={form.control}
                   name="windDirection"
-                  id="windDirection"
+                  render={({ field }) => (
+                    <FormItem className="grid flex-grow gap-1.5">
+                      <FormLabel>Runway Direction</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Runway direction (degrees)"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const numberValue =
+                              value === "" ? undefined : Number(value);
+                            field.onChange(numberValue);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <Select name="windDirectionUnits" defaultValue="degrees">
-                  <SelectTrigger id="windDirectionUnits" className="w-[180px]">
-                    <SelectValue placeholder="Units" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="degrees">Degrees</SelectItem>
-                    <SelectItem value="radians">Radians</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormField
+                  control={form.control}
+                  name="windDirectionUnits"
+                  render={({ field }) => (
+                    <FormItem className="grid w-[180px] gap-1.5">
+                      <FormLabel>Runway Direction Units</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger id="windDirectionUnits">
+                            <SelectValue placeholder="Units" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="degrees">Degrees</SelectItem>
+                            <SelectItem value="radians">Radians</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
-              <ErrorList errors={errors?.fieldErrors?.windDirection} />
-              <ErrorList errors={errors?.fieldErrors?.windDirectionUnits} />
-            </div>
-            <Button type="submit" variant="default">
-              Calculate
-            </Button>
-          </form>
+
+              <Button type="submit" variant="default">
+                Calculate
+              </Button>
+            </form>
+          </Form>
         </CardContent>
         <CardFooter>
           <p className="w-full text-center text-lg font-semibold">
