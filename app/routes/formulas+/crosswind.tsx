@@ -41,7 +41,7 @@ import {
 import { useForm } from "react-hook-form";
 import { H3, P } from "~/components/ui/prose";
 
-const formSchema = z.object({
+const crosswindFormSchema = z.object({
   windSpeed: z.number().min(0),
   windSpeedUnits: z.enum(SpeedUnits),
   runwayDirection: z.number().min(0).max(360),
@@ -52,8 +52,8 @@ const formSchema = z.object({
 
 export default function Crosswind() {
   const [crosswind, setCrosswind] = useState<ValueUnitPair<SpeedUnit>>();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof crosswindFormSchema>>({
+    resolver: zodResolver(crosswindFormSchema),
     defaultValues: {
       windSpeed: 0,
       windSpeedUnits: "knots",
@@ -64,7 +64,7 @@ export default function Crosswind() {
     },
   });
 
-  function handleCalculate(values: z.infer<typeof formSchema>) {
+  function handleCalculate(values: z.infer<typeof crosswindFormSchema>) {
     const {
       windSpeed,
       windSpeedUnits,

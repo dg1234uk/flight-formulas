@@ -41,7 +41,7 @@ import { useForm } from "react-hook-form";
 import { H3, P } from "~/components/ui/prose";
 import { calculateHeadwindWithUnits } from "~/utils/formulas/headwind";
 
-const formSchema = z.object({
+const headwindFormSchema = z.object({
   windSpeed: z.number().min(0),
   windSpeedUnits: z.enum(SpeedUnits),
   runwayDirection: z.number().min(0).max(360),
@@ -52,8 +52,8 @@ const formSchema = z.object({
 
 export default function Headwind() {
   const [headwind, setHeadwind] = useState<ValueUnitPair<SpeedUnit>>();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof headwindFormSchema>>({
+    resolver: zodResolver(headwindFormSchema),
     defaultValues: {
       windSpeed: 0,
       windSpeedUnits: "knots",
@@ -64,7 +64,7 @@ export default function Headwind() {
     },
   });
 
-  function handleCalculate(values: z.infer<typeof formSchema>) {
+  function handleCalculate(values: z.infer<typeof headwindFormSchema>) {
     const {
       windSpeed,
       windSpeedUnits,
