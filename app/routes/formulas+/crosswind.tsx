@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { calculateCrosswindWithUnits } from "~/utils/calculators";
+import { calculateCrosswindWithUnits } from "~/utils/formulas/crosswind";
 import type {
   DirectionUnit,
   SpeedUnit,
@@ -132,55 +132,6 @@ export default function Crosswind() {
               <div className="flex w-full gap-2">
                 <FormField
                   control={form.control}
-                  name="windSpeed"
-                  render={({ field }) => (
-                    <FormItem className="grid flex-grow gap-1.5">
-                      <FormLabel>Wind Speed</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Wind speed (knots)"
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            const numberValue =
-                              value === "" ? undefined : Number(value);
-                            field.onChange(numberValue);
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="windSpeedUnits"
-                  render={({ field }) => (
-                    <FormItem className="grid w-[180px] gap-1.5">
-                      <FormLabel>Wind Speed Units</FormLabel>
-                      <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <SelectTrigger id="windSpeedUnits">
-                            <SelectValue placeholder="Units" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="knots">Knots</SelectItem>
-                            <SelectItem value="mph">MPH</SelectItem>
-                            <SelectItem value="m/s">m/s</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="flex w-full gap-2">
-                <FormField
-                  control={form.control}
                   name="runwayDirection"
                   render={({ field }) => (
                     <FormItem className="grid flex-grow gap-1.5">
@@ -188,7 +139,7 @@ export default function Crosswind() {
                       <FormControl>
                         <Input
                           type="text"
-                          placeholder="Runway direction (degrees)"
+                          placeholder="Runway direction"
                           onChange={(e) => {
                             const value = e.target.value;
                             const numberValue =
@@ -235,7 +186,7 @@ export default function Crosswind() {
                       <FormControl>
                         <Input
                           type="text"
-                          placeholder="Runway direction (degrees)"
+                          placeholder="Runway direction"
                           onChange={(e) => {
                             const value = e.target.value;
                             const numberValue =
@@ -272,7 +223,55 @@ export default function Crosswind() {
                   )}
                 />
               </div>
-
+              <div className="flex w-full gap-2">
+                <FormField
+                  control={form.control}
+                  name="windSpeed"
+                  render={({ field }) => (
+                    <FormItem className="grid flex-grow gap-1.5">
+                      <FormLabel>Wind Speed</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Wind speed"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const numberValue =
+                              value === "" ? undefined : Number(value);
+                            field.onChange(numberValue);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="windSpeedUnits"
+                  render={({ field }) => (
+                    <FormItem className="grid w-[180px] gap-1.5">
+                      <FormLabel>Wind Speed Units</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger id="windSpeedUnits">
+                            <SelectValue placeholder="Units" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="knots">Knots</SelectItem>
+                            <SelectItem value="mph">MPH</SelectItem>
+                            <SelectItem value="m/s">m/s</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <Button type="submit" variant="default">
                 Calculate
               </Button>
@@ -283,7 +282,8 @@ export default function Crosswind() {
           <p className="w-full text-center text-lg font-semibold">
             Crosswind Component:{" "}
             <span className="text-blue-500 dark:text-blue-300">
-              {crosswind?.value ?? "N/A"} {crosswind?.unit ?? null}
+              {crosswind?.value?.toPrecision(3) ?? "N/A"}{" "}
+              {crosswind?.unit ?? null}
             </span>
           </p>
         </CardFooter>

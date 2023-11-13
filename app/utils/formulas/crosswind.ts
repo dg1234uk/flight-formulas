@@ -2,8 +2,8 @@ import type {
   DirectionUnit,
   SpeedUnit,
   ValueUnitPair,
-} from "./unitConversions";
-import { convertSpeed, convertToRadians } from "./unitConversions";
+} from "../unitConversions";
+import { convertSpeed, convertToRadians } from "../unitConversions";
 
 /**
  * Calculates the crosswind component of the wind on a runway.
