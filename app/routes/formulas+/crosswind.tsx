@@ -39,6 +39,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { useForm } from "react-hook-form";
+import { H3, P } from "~/components/ui/prose";
 
 const formSchema = z.object({
   windSpeed: z.number().min(0),
@@ -291,18 +292,16 @@ export default function Crosswind() {
       <Card className="mt-8">
         <CardContent>
           <article className="prose dark:prose-dark max-w-none text-center">
-            <h3 className="mt-8 scroll-m-20 text-2xl font-semibold tracking-tight">
-              How the Crosswind Calculator Works
-            </h3>
-            <p>
+            <H3 className="mt-8">How the Crosswind Calculator Works</H3>
+            <P>
               The crosswind calculator uses trigonometric functions to calculate
               the crosswind component based on the wind speed, runway direction,
               and wind direction.
-            </p>
-            <p>
+            </P>
+            <P>
               The formula used is: Crosswind = Wind Speed * sin(Wind Direction -
               Runway Direction).
-            </p>
+            </P>
           </article>
         </CardContent>
       </Card>
