@@ -47,7 +47,7 @@ const turnRadiusFormSchema = z.object({
   bankAngleUnits: z.enum(DirectionUnits),
 });
 
-export default function RateOfClimb() {
+export default function TurnRadius() {
   const [turnRadius, setTurnRadius] = useState<ValueUnitPair<LengthUnit>>();
   const form = useForm<z.infer<typeof turnRadiusFormSchema>>({
     resolver: zodResolver(turnRadiusFormSchema),
@@ -60,7 +60,6 @@ export default function RateOfClimb() {
   });
 
   function handleCalculate(values: z.infer<typeof turnRadiusFormSchema>) {
-    console.log(values);
     const tasUnitPair: ValueUnitPair<SpeedUnit> = {
       value: values.tas,
       unit: values.tasUnits,
