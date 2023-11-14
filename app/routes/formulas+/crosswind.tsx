@@ -118,23 +118,17 @@ export default function Crosswind() {
 
   const crosswindMathML = `
   <math display="block">
-  <mrow>
     <mi>Crosswind</mi>
     <mo>=</mo>
     <mi>Wind Speed</mi>
     <mo>×</mo>
-    <mrow>
-      <mi>sin</mi>
-      <mo>⁡</mo>
-    </mrow>
-    <mrow>
-      <mo fence="true">(</mo>
-      <mi>Wind Direction</mi>
-      <mo>−</mo>
-      <mi>Runway Direction</mi>
-      <mo fence="true">)</mo>
-    </mrow>
-  </mrow>
+    <mi>sin</mi>
+    <mo>⁡</mo>
+    <mo fence="true">(</mo>
+    <mi>Wind Direction</mi>
+    <mo>−</mo>
+    <mi>Runway Direction</mi>
+    <mo fence="true">)</mo>
 </math>
 `;
 

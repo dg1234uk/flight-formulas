@@ -59,7 +59,6 @@ export default function RateOfClimb() {
   });
 
   function handleCalculate(values: z.infer<typeof RateOfClimbFormSchema>) {
-    console.log(values);
     const tasUnitPair: ValueUnitPair<SpeedUnit> = {
       value: values.tas,
       unit: values.tasUnits,
@@ -88,7 +87,6 @@ export default function RateOfClimb() {
 
   const rateOfClimbMathML = `
   <math display="block">
-  <mrow>
     <mi>R</mi>
     <mi>O</mi>
     <mi>C</mi>
@@ -103,8 +101,6 @@ export default function RateOfClimb() {
       <mi>P</mi>
       <mi>A</mi>
     <mo fence="true">)</mo>
-    </mrow>
-  </mrow>
 </math>
 `;
 
