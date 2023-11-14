@@ -256,11 +256,11 @@ export default function RateOfClimb() {
             <P>
               <strong>Rate of Climb (ROC)</strong> is calculated using the
               formula:
-              <div
-                className="mt-2"
-                dangerouslySetInnerHTML={{ __html: rateOfClimbMathML }}
-              />
             </P>
+            <div
+              className="mt-2"
+              dangerouslySetInnerHTML={{ __html: rateOfClimbMathML }}
+            />
 
             <P>
               In this equation, the ROC is determined by multiplying TAS by the

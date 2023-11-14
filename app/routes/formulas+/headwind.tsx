@@ -335,11 +335,11 @@ export default function Headwind() {
             <P>
               <strong>Headwind Component</strong>: is calculated using the
               formula:
-              <div
-                className="mt-2"
-                dangerouslySetInnerHTML={{ __html: headwindMathML }}
-              />
             </P>
+            <div
+              className="mt-2"
+              dangerouslySetInnerHTML={{ __html: headwindMathML }}
+            />
             <P>
               In this equation, the headwind component is determined by
               multiplying the wind speed by the cosine of the angle difference.

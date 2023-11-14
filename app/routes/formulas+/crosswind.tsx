@@ -335,11 +335,11 @@ export default function Crosswind() {
             <P>
               <strong>Crosswind Component</strong>: is calculated using the
               formula:
-              <div
-                className="mt-2"
-                dangerouslySetInnerHTML={{ __html: crosswindMathML }}
-              />
             </P>
+            <div
+              className="mt-2"
+              dangerouslySetInnerHTML={{ __html: crosswindMathML }}
+            />
             <P>
               In this equation, the crosswind component is determined by
               multiplying the wind speed by the sine of the angle difference.
