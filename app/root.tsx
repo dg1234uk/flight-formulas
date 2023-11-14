@@ -71,7 +71,7 @@ const formulas: Formula[] = [
   },
   {
     name: "Lat Long format converter",
-    href: "/formulas/lat-lon-format",
+    href: "/formulas/lat-lon",
   },
   {
     name: "Lift Equation Calculator",
