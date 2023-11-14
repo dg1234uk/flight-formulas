@@ -17,13 +17,14 @@ import {
 } from "~/components/ui/select";
 import type {
   DirectionUnit,
+  LengthUnit,
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
 import {
   DirectionUnits,
   SpeedUnits,
-  convertSpeed,
+  convertLength,
 } from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -37,70 +38,77 @@ import {
 } from "~/components/ui/form";
 import { useForm } from "react-hook-form";
 import { H3, P } from "~/components/ui/prose";
-import { calculateRateOfClimbWithUnits } from "~/utils/formulas/rateOfClimb";
+import { calculateTurnRadiusWithUnits } from "~/utils/formulas/turn-radius";
 
-const RateOfClimbFormSchema = z.object({
+const turnRadiusFormSchema = z.object({
   tas: z.number().min(0),
   tasUnits: z.enum(SpeedUnits),
-  fpa: z.number().min(-90).max(90),
-  fpaUnits: z.enum(DirectionUnits),
+  bankAngle: z.number().gt(-90).lt(90),
+  bankAngleUnits: z.enum(DirectionUnits),
 });
 
-export default function RateOfClimb() {
-  const [roc, setRoc] = useState<ValueUnitPair<SpeedUnit>>();
-  const form = useForm<z.infer<typeof RateOfClimbFormSchema>>({
-    resolver: zodResolver(RateOfClimbFormSchema),
+export default function TurnRadius() {
+  const [turnRadius, setTurnRadius] = useState<ValueUnitPair<LengthUnit>>();
+  const form = useForm<z.infer<typeof turnRadiusFormSchema>>({
+    resolver: zodResolver(turnRadiusFormSchema),
     defaultValues: {
       tas: 0,
       tasUnits: "knots",
-      fpa: 0,
-      fpaUnits: "degrees",
+      bankAngle: 0,
+      bankAngleUnits: "degrees",
     },
   });
 
-  function handleCalculate(values: z.infer<typeof RateOfClimbFormSchema>) {
+  function handleCalculate(values: z.infer<typeof turnRadiusFormSchema>) {
     const tasUnitPair: ValueUnitPair<SpeedUnit> = {
       value: values.tas,
       unit: values.tasUnits,
     };
-    const fpaUnitPair: ValueUnitPair<DirectionUnit> = {
-      value: values.fpa,
-      unit: values.fpaUnits,
+    const bankAngleUnitPair: ValueUnitPair<DirectionUnit> = {
+      value: values.bankAngle,
+      unit: values.bankAngleUnits,
     };
 
-    const rocUnitPair = calculateRateOfClimbWithUnits(tasUnitPair, fpaUnitPair);
+    const radiusUnitPair = calculateTurnRadiusWithUnits(
+      tasUnitPair,
+      bankAngleUnitPair,
+    );
 
-    const resultUnit = "fpm";
-    const rocInFPM = convertSpeed(
-      rocUnitPair.value,
-      rocUnitPair.unit,
+    const resultUnit = "meters";
+    const rocInFPM = convertLength(
+      radiusUnitPair.value,
+      radiusUnitPair.unit,
       resultUnit,
     );
 
-    const convertedRocUnitPair: ValueUnitPair<SpeedUnit> = {
+    const convertedRadiusUnitPair: ValueUnitPair<LengthUnit> = {
       value: rocInFPM,
       unit: resultUnit,
     };
 
-    setRoc(convertedRocUnitPair);
+    setTurnRadius(convertedRadiusUnitPair);
   }
 
-  const rateOfClimbMathML = `
-  <math display="block">
-    <mi>R</mi>
-    <mi>O</mi>
-    <mi>C</mi>
-    <mo>=</mo>
-    <mi>T</mi>
-    <mi>A</mi>
-    <mi>S</mi>
-    <mo>×</mo>
-    <mi>cos</mi>
-    <mo fence="true">(</mo>
-      <mi>F</mi>
-      <mi>P</mi>
-      <mi>A</mi>
-    <mo fence="true">)</mo>
+  const turnRadiusMathML = `
+  <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>Turn Radius</mi>
+  <mo>=</mo>
+  <mfrac>
+    <msup>
+      <mi>V</mi>
+      <mn>2</mn>
+    </msup>
+    <mrow>
+      <mi>g</mi>
+      <mo>&#x22C5;</mo>
+      <mi>tan</mi>
+      <mo fence="true">(</mo>
+        <mrow>
+          <mi>Bank Angle</mi>
+        </mrow>
+        <mo fence="true">)</mo>
+    </mrow>
+  </mfrac>
 </math>
 `;
 
@@ -108,9 +116,7 @@ export default function RateOfClimb() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="font-medium">
-            Rate of Climb Calculator
-          </CardTitle>
+          <CardTitle className="font-medium">Turn Radius Calculator</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -169,14 +175,14 @@ export default function RateOfClimb() {
               <div className="flex w-full gap-2">
                 <FormField
                   control={form.control}
-                  name="fpa"
+                  name="bankAngle"
                   render={({ field }) => (
                     <FormItem className="grid flex-grow gap-1.5">
-                      <FormLabel>Flight Path Angle (FPA)</FormLabel>
+                      <FormLabel>Bank Angle</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
-                          placeholder="Flight Path Angle (FPA)"
+                          placeholder="Bank Angle"
                           onChange={(e) => {
                             const value = e.target.value;
                             const numberValue =
@@ -191,16 +197,16 @@ export default function RateOfClimb() {
                 />
                 <FormField
                   control={form.control}
-                  name="fpaUnits"
+                  name="bankAngleUnits"
                   render={({ field }) => (
                     <FormItem className="grid w-[180px] gap-1.5">
-                      <FormLabel>FPA Units</FormLabel>
+                      <FormLabel>Bank Angle Units</FormLabel>
                       <FormControl>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
-                          <SelectTrigger id="fpaUnits">
+                          <SelectTrigger id="bankAngleUnits">
                             <SelectValue placeholder="Units" />
                           </SelectTrigger>
                           <SelectContent>
@@ -221,9 +227,10 @@ export default function RateOfClimb() {
         </CardContent>
         <CardFooter>
           <p className="w-full text-center text-lg font-semibold">
-            Rate of Climb:{" "}
+            Turn Radius:{" "}
             <span className="text-blue-500 dark:text-blue-300">
-              {roc?.value?.toFixed(3) ?? "N/A"} {roc?.unit ?? null}
+              {turnRadius?.value?.toFixed(3) ?? "N/A"}{" "}
+              {turnRadius?.unit ?? null}
             </span>
           </p>
         </CardFooter>
@@ -231,41 +238,38 @@ export default function RateOfClimb() {
       <Card className="mt-8">
         <CardContent>
           <article className="max-w-none text-center">
-            <H3 className="mt-8">How the Rate of Climb Calculator Works</H3>
+            <H3 className="mt-8">How the Turn Radius Calculator Works</H3>
             <P>
-              Calculating an aircraft's rate of climb involves two key
-              variables: true airspeed (TAS) and flight path angle (FPA).
+              To calculate the level turn radius of an aircraft you require two
+              key variables. These are True Airspeed (TAS) and Bank Angle (θ).
+              You require the constant for gravitational acceleration (g).
             </P>
-
             <P>
-              <strong>True Airspeed (TAS)</strong> is the aircraft's speed
+              <strong>True Airspeed (TAS)</strong>: is the aircraft's speed
               relative to the air, usually measured in knots or meters per
               second.
             </P>
-
             <P>
-              <strong>Flight Path Angle (FPA)</strong> is the angle between the
-              horizon and the aircraft's path, typically expressed in radians or
+              <strong>Bank Angle(θ)</strong>: This is the angle at which the
+              aircraft is tilted to its side for the turn. It's a crucial factor
+              in determining the turn radius and is usually expressed in
               degrees.
             </P>
-
             <P>
-              <strong>Rate of Climb (ROC)</strong> is calculated using the
-              formula:
+              <strong>Gravitational Acceleration (g)</strong>: The constant
+              acceleration due to gravity, approximately 9.81m/s^2 on the
+              Earth’s surface, is also a factor in the calculation.
             </P>
+            <P>The formula for turn radius</P>
             <div
               className="mt-2"
-              dangerouslySetInnerHTML={{ __html: rateOfClimbMathML }}
+              dangerouslySetInnerHTML={{ __html: turnRadiusMathML }}
             />
-
             <P>
-              In this equation, the ROC is determined by multiplying TAS by the
-              sine of FPA. The sine function derives the vertical component of
-              the aircraft's velocity. As a result, without conversion, this
-              formula gives the ROC in the same units as TAS (e.g. TAS in knots
-              would give ROC in nautical miles per hour). Commonly rate of climb
-              is expressed in either feet per minute (fpm) or meters per second
-              (m/s).
+              The resulting turn radius will be in the same units as the square
+              of the TAS. For example, if TAS is in meters per second, the turn
+              radius will be in meters. For practical purposes, pilots may
+              convert this into nautical miles or kilometers as required.
             </P>
           </article>
         </CardContent>

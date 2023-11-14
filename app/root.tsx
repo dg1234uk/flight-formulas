@@ -66,8 +66,12 @@ const formulas: Formula[] = [
     href: "/formulas/standard-rate-turn",
   },
   {
+    name: "Turn Load Factor Calculator",
+    href: "/formulas/turn-lf",
+  },
+  {
     name: "Lat Long format converter",
-    href: "/formulas/lat-lon-format",
+    href: "/formulas/lat-lon",
   },
   {
     name: "Lift Equation Calculator",

@@ -118,23 +118,17 @@ export default function Headwind() {
 
   const headwindMathML = `
   <math display="block">
-  <mrow>
     <mi>Headwind</mi>
     <mo>=</mo>
     <mi>Wind Speed</mi>
     <mo>×</mo>
-    <mrow>
-      <mi>cos</mi>
-      <mo>⁡</mo>
-    </mrow>
-    <mrow>
-      <mo fence="true">(</mo>
-      <mi>Wind Direction</mi>
-      <mo>−</mo>
-      <mi>Runway Direction</mi>
-      <mo fence="true">)</mo>
-    </mrow>
-  </mrow>
+    <mi>cos</mi>
+    <mo>⁡</mo>
+    <mo fence="true">(</mo>
+    <mi>Wind Direction</mi>
+    <mo>−</mo>
+    <mi>Runway Direction</mi>
+    <mo fence="true">)</mo>
 </math>
 `;
 
@@ -335,11 +329,11 @@ export default function Headwind() {
             <P>
               <strong>Headwind Component</strong>: is calculated using the
               formula:
-              <div
-                className="mt-2"
-                dangerouslySetInnerHTML={{ __html: headwindMathML }}
-              />
             </P>
+            <div
+              className="mt-2"
+              dangerouslySetInnerHTML={{ __html: headwindMathML }}
+            />
             <P>
               In this equation, the headwind component is determined by
               multiplying the wind speed by the cosine of the angle difference.
