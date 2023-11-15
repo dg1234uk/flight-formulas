@@ -46,6 +46,8 @@ export default function About() {
             <a
               className="underline"
               href="https://github.com/dg1234uk/flight-formulas"
+              target="_blank"
+              rel="noreferrer"
             >
               GitHub repository
             </a>
