@@ -4,7 +4,7 @@ import type {
   SpeedUnit,
   ValueUnitPair,
 } from "../unitConversions";
-import { convertSpeed, convertToRadians } from "../unitConversions";
+import { convertSpeed, convertToRadians, g } from "../unitConversions";
 
 /**
  * Calculates the turn radius of an aircraft.
@@ -14,7 +14,6 @@ import { convertSpeed, convertToRadians } from "../unitConversions";
  * @returns {number} The turn radius in meters.
  */
 export function calculateTurnRadius(velocity: number, bankAngle: number) {
-  const g = 9.81; // acceleration due to gravity in m/s^2
   const radius = velocity ** 2 / (g * Math.tan(bankAngle));
   return radius;
 }

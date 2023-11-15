@@ -38,7 +38,7 @@ import {
 } from "~/components/ui/form";
 import { useForm } from "react-hook-form";
 import { H3, P } from "~/components/ui/prose";
-import { calculateTurnRadiusWithUnits } from "~/utils/formulas/turn-radius";
+import { calculateTurnRadiusWithUnits } from "~/utils/formulas/turnRadius";
 
 const turnRadiusFormSchema = z.object({
   tas: z.number().min(0),
