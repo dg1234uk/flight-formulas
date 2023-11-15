@@ -17,14 +17,13 @@ import {
 } from "~/components/ui/select";
 import type {
   DirectionUnit,
-  LengthUnit,
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
 import {
   DirectionUnits,
   SpeedUnits,
-  convertLength,
+  convertToDegrees,
 } from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,19 +37,19 @@ import {
 } from "~/components/ui/form";
 import { useForm } from "react-hook-form";
 import { H3, P } from "~/components/ui/prose";
-import { calculateTurnRadiusWithUnits } from "~/utils/formulas/turnRadius";
+import { calculateTurnRateWithUnits } from "~/utils/formulas/turnRate";
 
-const turnRadiusFormSchema = z.object({
+const turnRateFormSchema = z.object({
   tas: z.number().min(0),
   tasUnits: z.enum(SpeedUnits),
   bankAngle: z.number().gt(-90).lt(90),
   bankAngleUnits: z.enum(DirectionUnits),
 });
 
-export default function TurnRadius() {
-  const [turnRadius, setTurnRadius] = useState<ValueUnitPair<LengthUnit>>();
-  const form = useForm<z.infer<typeof turnRadiusFormSchema>>({
-    resolver: zodResolver(turnRadiusFormSchema),
+export default function TurnRate() {
+  const [turnRate, setTurnRate] = useState<ValueUnitPair<DirectionUnit>>();
+  const form = useForm<z.infer<typeof turnRateFormSchema>>({
+    resolver: zodResolver(turnRateFormSchema),
     defaultValues: {
       tas: 0,
       tasUnits: "knots",
@@ -59,7 +58,7 @@ export default function TurnRadius() {
     },
   });
 
-  function handleCalculate(values: z.infer<typeof turnRadiusFormSchema>) {
+  function handleCalculate(values: z.infer<typeof turnRateFormSchema>) {
     const tasUnitPair: ValueUnitPair<SpeedUnit> = {
       value: values.tas,
       unit: values.tasUnits,
@@ -69,44 +68,40 @@ export default function TurnRadius() {
       unit: values.bankAngleUnits,
     };
 
-    const radiusUnitPair = calculateTurnRadiusWithUnits(
+    const rateUnitPair = calculateTurnRateWithUnits(
       tasUnitPair,
       bankAngleUnitPair,
     );
 
-    const resultUnit = "meters";
-    const rocInFPM = convertLength(
-      radiusUnitPair.value,
-      radiusUnitPair.unit,
-      resultUnit,
+    const resultUnit = "degrees";
+    const rateInDegrees = convertToDegrees(
+      rateUnitPair.value,
+      rateUnitPair.unit,
     );
 
-    const convertedRadiusUnitPair: ValueUnitPair<LengthUnit> = {
-      value: rocInFPM,
+    const convertedRateUnitPair: ValueUnitPair<DirectionUnit> = {
+      value: rateInDegrees,
       unit: resultUnit,
     };
 
-    setTurnRadius(convertedRadiusUnitPair);
+    setTurnRate(convertedRateUnitPair);
   }
 
-  const turnRadiusMathML = `
+  const turnRateMathML = `
   <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
-  <mi>Turn Radius</mi>
+  <mi>Turn Rate</mi>
   <mo>=</mo>
   <mfrac>
-    <msup>
-      <mi>V</mi>
-      <mn>2</mn>
-    </msup>
     <mrow>
       <mi>g</mi>
-      <mo>&#x22C5;</mo>
+      <mo>&times;</mo>
       <mi>tan</mi>
       <mo fence="true">(</mo>
-        <mrow>
           <mi>Bank Angle</mi>
-        </mrow>
-        <mo fence="true">)</mo>
+      <mo fence="true">)</mo>
+    </mrow>
+    <mrow>
+      <mi>Airspeed</mi>
     </mrow>
   </mfrac>
 </math>
@@ -116,7 +111,7 @@ export default function TurnRadius() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="font-medium">Turn Radius Calculator</CardTitle>
+          <CardTitle className="font-medium">Turn Rate Calculator</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -227,10 +222,9 @@ export default function TurnRadius() {
         </CardContent>
         <CardFooter>
           <p className="w-full text-center text-lg font-semibold">
-            Turn Radius:{" "}
+            Turn Rate:{" "}
             <span className="text-blue-500 dark:text-blue-300">
-              {turnRadius?.value?.toFixed(3) ?? "N/A"}{" "}
-              {turnRadius?.unit ?? null}
+              {turnRate?.value?.toFixed(3) ?? "N/A"} {turnRate?.unit ?? null}
             </span>
           </p>
         </CardFooter>
@@ -238,11 +232,12 @@ export default function TurnRadius() {
       <Card className="mt-8">
         <CardContent>
           <article className="max-w-none text-center">
-            <H3 className="mt-8">How the Turn Radius Calculator Works</H3>
+            <H3 className="mt-8">How the Turn Rate Calculator Works</H3>
             <P>
-              To calculate the level turn radius of an aircraft you require two
-              key variables. These are True Airspeed (TAS) and Bank Angle (θ).
-              You require the constant for gravitational acceleration (g).
+              To accurately determine the Rate of Turn (ROT) for an aircraft,
+              several key variables are essential. These include True Airspeed
+              (TAS), Bank Angle (θ), and the constant for gravitational
+              acceleration (g).
             </P>
             <P>
               <strong>True Airspeed (TAS)</strong>: is the aircraft's speed
@@ -263,13 +258,11 @@ export default function TurnRadius() {
             <P>The formula for turn radius</P>
             <div
               className="mt-2"
-              dangerouslySetInnerHTML={{ __html: turnRadiusMathML }}
+              dangerouslySetInnerHTML={{ __html: turnRateMathML }}
             />
             <P>
-              The resulting turn radius will be in the same units as the square
-              of the TAS. For example, if TAS is in meters per second, the turn
-              radius will be in meters. For practical purposes, pilots may
-              convert this into nautical miles or kilometers as required.
+              The rate of turn is typically expressed in degrees per second or
+              minutes per turn.
             </P>
           </article>
         </CardContent>
