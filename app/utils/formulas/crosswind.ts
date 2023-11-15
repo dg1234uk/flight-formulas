@@ -65,11 +65,11 @@ export function calculateCrosswindWithUnits(
   );
 
   // Package the result with the unit
-  const crosswindUnitPiar: ValueUnitPair<SpeedUnit> = {
+  const crosswindUnitPair: ValueUnitPair<SpeedUnit> = {
     value: crosswindComponentValue,
     unit: "m/s",
   };
 
   // Return the result object
-  return crosswindUnitPiar;
+  return crosswindUnitPair;
 }

@@ -106,7 +106,6 @@ export default function Crosswind() {
         crosswindUnits,
       );
 
-      console.log(Math.round(crosswindComponent));
       setCrosswind({
         value: crosswindComponent,
         unit: crosswindUnits,
