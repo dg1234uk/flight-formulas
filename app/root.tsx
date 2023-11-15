@@ -14,15 +14,13 @@ import fontStylesheetUrl from "./styles/mathfonts.css";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { GeneralErrorBoundary } from "./components/error-boundary";
 import { buttonVariants } from "./components/ui/button";
-// import pkg from "better-react-mathjax";
-// const { MathJaxContext } = pkg;
 
 export const meta: MetaFunction = () => {
   return [
     { title: "Flight Formulas" },
     {
       name: "description",
-      content: `Aviation calulators and unit converters.`,
+      content: `Aviation calculators and unit converters.`,
     },
   ];
 };
@@ -170,7 +168,7 @@ const formulas: Formula[] = [
     href: "/formulas/fuel-flow",
   },
   {
-    name: "Cloub base and freezing level calculator",
+    name: "Cloud base and freezing level calculator",
     href: "/formulas/cloud-base",
   },
   {
@@ -236,14 +234,14 @@ const formulas: Formula[] = [
   // Temperature Error Correction calculator
   // QFE, QNH, QNE, QFF calculator
   // PLOG
-  // Corriolis Force calculator
+  // Coriolis Force calculator
   // Departure calculator
   // Convergency calculator
   // Track Error Angle calculator
   // Scale on a Mercator chart calculator
   // Scale calculator
   // Nautical Air Miles calculator
-  // Natutical Ground Miles calculator
+  // Nautical Ground Miles calculator
   // Gradient calculator (degrees, percent, ratio)
   // Frequency Bands
   // Wavelength calculator
@@ -294,7 +292,7 @@ export default function App() {
       <header className="bg-white py-4 shadow-sm dark:bg-gray-800">
         <div className="container mx-auto flex items-center justify-between px-4">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Flight Formulas
+            <Link to="/">Flight Formulas</Link>
           </h1>
           <nav className="flex space-x-4">
             <Link
