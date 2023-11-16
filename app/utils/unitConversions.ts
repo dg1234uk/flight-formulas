@@ -34,7 +34,7 @@ export type LengthUnit = (typeof LengthUnits)[number];
 
 // type MassUnit = "kilograms" | "pounds";
 // type TemperatureUnit = "celsius" | "fahrenheit";
-// type VolumeUnit = "liters" | "gallons";
+// type VolumeUnit = "litres" | "gallons";
 // type DensityUnit = "kilogramsPerCubicMeter" | "poundsPerCubicFoot";
 
 export type ValueUnitPair<UnitType> = {
