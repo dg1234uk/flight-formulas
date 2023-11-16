@@ -72,12 +72,8 @@ const formulas: Formula[] = [
     href: "/formulas/lat-lon",
   },
   {
-    name: "Lift Equation Calculator",
-    href: "/formulas/lift",
-  },
-  {
     name: "Speed Unit Converter",
-    href: "/formulas/speed-converter",
+    href: "/formulas/speed",
   },
   {
     name: "Distance Unit Converter",
@@ -106,6 +102,10 @@ const formulas: Formula[] = [
   {
     name: "Fuel Unit Converter",
     href: "/formulas/fuel-converter",
+  },
+  {
+    name: "Lift Equation Calculator",
+    href: "/formulas/lift",
   },
   {
     name: "Density Altitude Calculator",
