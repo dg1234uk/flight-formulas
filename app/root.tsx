@@ -172,8 +172,8 @@ const formulas: Formula[] = [
     href: "/formulas/cloud-base",
   },
   {
-    name: "AquaPlanning Speed Calculator",
-    href: "/formulas/hydroplane-speed",
+    name: "Aquaplaning Speed Calculator",
+    href: "/formulas/aquaplaning-speed",
     // Both rotating and non-rotating
   },
   {
@@ -265,6 +265,9 @@ const formulas: Formula[] = [
   // Wing formulas, taper ratio, aspect ratio, sweep angle, etc
   // Mass and balance calculator
   // https://edwilliams.org/avform147.htm
+  // TSM - Time Safety Margin
+  // Spatial Frequency
+  // Johnson's Criteria
 ];
 
 function Document({ children }: { children: React.ReactNode }) {

@@ -21,7 +21,7 @@ export default function Index() {
       <CardContent>
         <article className="pt-4 text-center">
           <P>
-            <strong>Welcome to Flight Formulas</strong>, my project focused on
+            <strong>Welcome to Flight Formulas</strong>, a project focused on
             aviation calculations and conversions. From essential calculations
             like Crosswind and Heading components to advanced computations such
             as convergency calculations and geodetic transformations, the site
