@@ -106,7 +106,6 @@ export default function Headwind() {
         headwindUnits,
       );
 
-      console.log(Math.round(headwindComponent));
       setHeadwind({
         value: headwindComponent,
         unit: headwindUnits,
