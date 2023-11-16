@@ -27,7 +27,6 @@ export default function SpeedConverter() {
     event: React.ChangeEvent<HTMLInputElement>,
     isInput1: boolean,
   ) => {
-    console.log(event.target.value);
     const newValue = Number(event.target.value);
     const fromUnit = isInput1 ? input1.unit : input2.unit;
     const toUnit = isInput1 ? input2.unit : input1.unit;
