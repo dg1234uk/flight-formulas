@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import type { SpeedUnit, ValueUnitPair } from "~/utils/unitConversions";
-import { convertSpeed } from "~/utils/unitConversions";
+import { SpeedLabels, convertSpeed } from "~/utils/unitConversions";
 import { H3, P } from "~/components/ui/prose";
 import { Label } from "~/components/ui/label";
 
@@ -107,12 +107,11 @@ export default function SpeedConverter() {
                     <SelectValue placeholder="Units" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="knots">Knots</SelectItem>
-                    <SelectItem value="mph">MPH</SelectItem>
-                    <SelectItem value="m/s">m/s</SelectItem>
-                    <SelectItem value="kph">KPH</SelectItem>
-                    <SelectItem value="fpm">feet per minute</SelectItem>
-                    <SelectItem value="fps">feet per second</SelectItem>
+                    {Object.entries(SpeedLabels).map(([key, value]) => (
+                      <SelectItem key={key} value={key}>
+                        {value}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -137,12 +136,11 @@ export default function SpeedConverter() {
                     <SelectValue placeholder="Units" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="knots">Knots</SelectItem>
-                    <SelectItem value="mph">MPH</SelectItem>
-                    <SelectItem value="m/s">m/s</SelectItem>
-                    <SelectItem value="kph">KPH</SelectItem>
-                    <SelectItem value="fpm">feet per minute</SelectItem>
-                    <SelectItem value="fps">feet per second</SelectItem>
+                    {Object.entries(SpeedLabels).map(([key, value]) => (
+                      <SelectItem key={key} value={key}>
+                        {value}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>

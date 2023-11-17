@@ -19,23 +19,6 @@ const RADIANS_TO_DEGREES = 180 / Math.PI;
 export const g = 9.81; // Acceleration due to gravity in m/s^2
 
 export const SpeedUnits = ["m/s", "knots", "mph", "kph", "fps", "fpm"] as const;
-// export const SpeedUnits = {
-//   "m/s": "Meters Per Second",
-//   knots: "Knots",
-//   mph: "MPH",
-//   kph: "KPH",
-//   fps: "Feet Per Second",
-//   fpm: "Feet Per Minute",
-// } as const;
-
-// export enum SpeedUnits {
-//   "m/s" = "Meters Per Second",
-//   "knots" = "Knots",
-//   "mph" = "MPH",
-//   "kph" = "KPH",
-//   "fps" = "Feet Per Second",
-//   "fpm" = "Feet Per Minute",
-// }
 
 export const DirectionUnits = ["degrees", "radians"] as const;
 export const LengthUnits = [
@@ -54,6 +37,16 @@ export type LengthUnit = (typeof LengthUnits)[number];
 // type TemperatureUnit = "celsius" | "fahrenheit";
 // type VolumeUnit = "litres" | "gallons";
 // type DensityUnit = "kilogramsPerCubicMeter" | "poundsPerCubicFoot";
+
+type SpeedObject = Record<SpeedUnit, string>;
+export const SpeedLabels: SpeedObject = {
+  "m/s": "Meters Per Second",
+  knots: "Knots",
+  mph: "Miles per hour",
+  kph: "Kilometers per hour",
+  fps: "Feet per second",
+  fpm: "Feet per minute",
+};
 
 export type ValueUnitPair<UnitType> = {
   value: number;
