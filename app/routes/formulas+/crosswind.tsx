@@ -306,8 +306,8 @@ export default function Crosswind() {
           <article className="max-w-none text-center">
             <H3 className="mt-8">How the Crosswind Calculator Works</H3>
             <P>
-              The calculation of crosswind invloves determining the wind's
-              strength perpendicular to the aicraft's direction of travel or
+              The calculation of crosswind involves determining the wind's
+              strength perpendicular to the aircraft's direction of travel or
               runway orientation. This is known as the crosswind component.
             </P>
             <P>

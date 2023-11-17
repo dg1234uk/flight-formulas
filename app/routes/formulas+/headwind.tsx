@@ -106,7 +106,6 @@ export default function Headwind() {
         headwindUnits,
       );
 
-      console.log(Math.round(headwindComponent));
       setHeadwind({
         value: headwindComponent,
         unit: headwindUnits,
@@ -307,8 +306,8 @@ export default function Headwind() {
           <article className="max-w-none text-center">
             <H3 className="mt-8">How the Headwind Calculator Works</H3>
             <P>
-              The calculation of headwind component invloves determining the
-              wind's strength parallel to the aicraft's direction of travel or
+              The calculation of headwind component involves determining the
+              wind's strength parallel to the aircraft's direction of travel or
               runway orientation.
             </P>
             <P>

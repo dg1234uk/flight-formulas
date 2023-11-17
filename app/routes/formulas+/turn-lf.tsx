@@ -173,7 +173,7 @@ export default function TurningLF() {
             <P>
               As the bank angle increase, the cosine of the angle decreases,
               leading to an increase in load factor. A bank angle of 0° (level
-              flight) gives a load factor of 1, meaning no addditional load is
+              flight) gives a load factor of 1, meaning no additional load is
               applied. At steeper bank angles, the load factor significantly
               increases. A bank angle of 90° would result in an infinite load
               factor, which is not possible.
