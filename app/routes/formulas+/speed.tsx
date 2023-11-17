@@ -13,12 +13,18 @@ import { convertSpeed } from "~/utils/unitConversions";
 import { H3, P } from "~/components/ui/prose";
 import { Label } from "~/components/ui/label";
 
+type NullableValueUnitPair<Unit> = {
+  [K in keyof ValueUnitPair<Unit>]: K extends "value"
+    ? number | ""
+    : ValueUnitPair<Unit>[K];
+};
+
 export default function SpeedConverter() {
-  const [input1, setInput1] = useState<ValueUnitPair<SpeedUnit>>({
+  const [input1, setInput1] = useState<NullableValueUnitPair<SpeedUnit>>({
     value: 0,
     unit: "knots",
   });
-  const [input2, setInput2] = useState<ValueUnitPair<SpeedUnit>>({
+  const [input2, setInput2] = useState<NullableValueUnitPair<SpeedUnit>>({
     value: 0,
     unit: "mph",
   });
@@ -27,11 +33,16 @@ export default function SpeedConverter() {
     event: React.ChangeEvent<HTMLInputElement>,
     isInput1: boolean,
   ) => {
-    const newValue = Number(event.target.value);
+    const inputValue = event.target.value;
+    const newValue = inputValue === "" ? "" : Number(inputValue);
     const fromUnit = isInput1 ? input1.unit : input2.unit;
     const toUnit = isInput1 ? input2.unit : input1.unit;
 
-    const convertedValue = convertSpeed(newValue, fromUnit, toUnit);
+    let convertedValue: number | "" = "";
+
+    if (newValue !== "") {
+      convertedValue = convertSpeed(newValue, fromUnit, toUnit);
+    }
 
     if (isInput1) {
       setInput1({ value: newValue, unit: fromUnit });
@@ -45,11 +56,23 @@ export default function SpeedConverter() {
   const handleUnitChange = (newUnit: SpeedUnit, isInput1: boolean) => {
     const fromPair = isInput1 ? input1 : input2;
 
-    const convertedValue = convertSpeed(fromPair.value, fromPair.unit, newUnit);
-    if (isInput1) {
-      setInput1({ value: convertedValue, unit: newUnit });
+    if (fromPair.value === "") {
+      if (isInput1) {
+        setInput1({ ...input1, unit: newUnit });
+      } else {
+        setInput2({ ...input2, unit: newUnit });
+      }
     } else {
-      setInput2({ value: convertedValue, unit: newUnit });
+      const convertedValue = convertSpeed(
+        fromPair.value,
+        fromPair.unit,
+        newUnit,
+      );
+      if (isInput1) {
+        setInput1({ value: convertedValue, unit: newUnit });
+      } else {
+        setInput2({ value: convertedValue, unit: newUnit });
+      }
     }
   };
 
