@@ -54,7 +54,7 @@ export type ValueUnitPair<UnitType> = {
 };
 
 export function isSpeedUnit(unit: string): unit is SpeedUnit {
-  return unit in SpeedUnits;
+  return (SpeedUnits as readonly string[]).includes(unit);
 }
 
 export function isDirectionUnit(unit: string): unit is DirectionUnit {
