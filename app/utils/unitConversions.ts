@@ -19,6 +19,24 @@ const RADIANS_TO_DEGREES = 180 / Math.PI;
 export const g = 9.81; // Acceleration due to gravity in m/s^2
 
 export const SpeedUnits = ["m/s", "knots", "mph", "kph", "fps", "fpm"] as const;
+// export const SpeedUnits = {
+//   "m/s": "Meters Per Second",
+//   knots: "Knots",
+//   mph: "MPH",
+//   kph: "KPH",
+//   fps: "Feet Per Second",
+//   fpm: "Feet Per Minute",
+// } as const;
+
+// export enum SpeedUnits {
+//   "m/s" = "Meters Per Second",
+//   "knots" = "Knots",
+//   "mph" = "MPH",
+//   "kph" = "KPH",
+//   "fps" = "Feet Per Second",
+//   "fpm" = "Feet Per Minute",
+// }
+
 export const DirectionUnits = ["degrees", "radians"] as const;
 export const LengthUnits = [
   "meters",
@@ -43,7 +61,7 @@ export type ValueUnitPair<UnitType> = {
 };
 
 export function isSpeedUnit(unit: string): unit is SpeedUnit {
-  return (SpeedUnits as readonly string[]).includes(unit);
+  return unit in SpeedUnits;
 }
 
 export function isDirectionUnit(unit: string): unit is DirectionUnit {
