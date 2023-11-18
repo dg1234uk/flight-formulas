@@ -154,7 +154,7 @@ export default function LengthConverter() {
             <H3 className="mt-8">How the Length Converter Works</H3>
             <P>Conversion Factors:</P>
             <ul className="list-disc pl-8 text-left">
-              <li>NM to meters: Multiply knots by xxx</li>
+              <li>NM to meters: Multiply NM by xxx</li>
             </ul>
           </article>
         </CardContent>
