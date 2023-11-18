@@ -67,8 +67,8 @@ const formulas: Formula[] = [
     href: "/formulas/speed",
   },
   {
-    name: "Distance Unit Converter",
-    href: "/formulas/distance-converter",
+    name: "Length Unit Converter",
+    href: "/formulas/length",
   },
   {
     name: "Angle Unit Converter",
