@@ -11,7 +11,7 @@ const NAUTICAL_MILES_TO_METERS = 1852;
 const KM_TO_METERS = 1000;
 const MILES_TO_METERS = 1609.34;
 
-// Direction
+// Angle
 const DEGREES_TO_RADIANS = Math.PI / 180;
 const RADIANS_TO_DEGREES = 180 / Math.PI;
 
@@ -19,8 +19,6 @@ const RADIANS_TO_DEGREES = 180 / Math.PI;
 export const g = 9.81; // Acceleration due to gravity in m/s^2
 
 export const SpeedUnits = ["m/s", "knots", "mph", "kph", "fps", "fpm"] as const;
-
-export const DirectionUnits = ["degrees", "radians"] as const;
 export const LengthUnits = [
   "meters",
   "feet",
@@ -28,10 +26,11 @@ export const LengthUnits = [
   "kilometers",
   "miles",
 ] as const;
+export const AngleUnits = ["degrees", "radians"] as const;
 
 export type SpeedUnit = (typeof SpeedUnits)[number];
-export type DirectionUnit = (typeof DirectionUnits)[number];
 export type LengthUnit = (typeof LengthUnits)[number];
+export type AngleUnit = (typeof AngleUnits)[number];
 
 // type MassUnit = "kilograms" | "pounds";
 // type TemperatureUnit = "celsius" | "fahrenheit";
@@ -57,6 +56,12 @@ export const lengthLabels: LengthObject = {
   miles: "Miles",
 };
 
+type AngleObject = Record<AngleUnit, string>;
+export const angleLables: AngleObject = {
+  degrees: "Degrees",
+  radians: "Radians",
+};
+
 export type ValueUnitPair<UnitType> = {
   value: number;
   unit: UnitType;
@@ -66,8 +71,8 @@ export function isSpeedUnit(unit: string): unit is SpeedUnit {
   return (SpeedUnits as readonly string[]).includes(unit);
 }
 
-export function isDirectionUnit(unit: string): unit is DirectionUnit {
-  return (DirectionUnits as readonly string[]).includes(unit);
+export function isDirectionUnit(unit: string): unit is AngleUnit {
+  return (AngleUnits as readonly string[]).includes(unit);
 }
 
 export function isLengthUnit(unit: string): unit is LengthUnit {
@@ -167,7 +172,7 @@ export function convertLength(
 
 export function convertToRadians(
   direction: number,
-  unit: DirectionUnit = "degrees",
+  unit: AngleUnit = "degrees",
 ) {
   if (unit !== "degrees" && unit !== "radians") {
     throw new Error("Invalid unit for conversion to Radians.");
@@ -177,7 +182,7 @@ export function convertToRadians(
 
 export function convertToDegrees(
   direction: number,
-  unit: DirectionUnit = "radians",
+  unit: AngleUnit = "radians",
 ) {
   if (unit !== "degrees" && unit !== "radians") {
     throw new Error("Invalid unit for conversion to Degrees.");

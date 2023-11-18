@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import type {
-  DirectionUnit,
+  AngleUnit,
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
@@ -41,7 +41,7 @@ const standardRateTurnFormSchema = z.object({
 });
 
 export default function StandardRateTurn() {
-  const [bankAngle, setBankAngle] = useState<ValueUnitPair<DirectionUnit>>();
+  const [bankAngle, setBankAngle] = useState<ValueUnitPair<AngleUnit>>();
   const form = useForm<z.infer<typeof standardRateTurnFormSchema>>({
     resolver: zodResolver(standardRateTurnFormSchema),
     defaultValues: {
@@ -61,7 +61,7 @@ export default function StandardRateTurn() {
 
     const AOBdegrees = convertToDegrees(standardRateAOBRadians);
 
-    const bankAngleUnitPair: ValueUnitPair<DirectionUnit> = {
+    const bankAngleUnitPair: ValueUnitPair<AngleUnit> = {
       value: AOBdegrees,
       unit: "degrees",
     };

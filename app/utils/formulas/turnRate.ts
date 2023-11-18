@@ -1,8 +1,4 @@
-import type {
-  DirectionUnit,
-  SpeedUnit,
-  ValueUnitPair,
-} from "../unitConversions";
+import type { AngleUnit, SpeedUnit, ValueUnitPair } from "../unitConversions";
 import { convertSpeed, convertToRadians, g } from "../unitConversions";
 
 /**
@@ -21,7 +17,7 @@ export function calculateTurnRate(tas: number, bankAngle: number) {
 
 export function calculateTurnRateWithUnits(
   velocityPair: ValueUnitPair<SpeedUnit>,
-  bankAnglePair: ValueUnitPair<DirectionUnit>,
+  bankAnglePair: ValueUnitPair<AngleUnit>,
 ) {
   const tasInMetersPerSecond = convertSpeed(
     velocityPair.value,
@@ -38,7 +34,7 @@ export function calculateTurnRateWithUnits(
     bankAngleInRadians,
   );
 
-  const rateUnitPair: ValueUnitPair<DirectionUnit> = {
+  const rateUnitPair: ValueUnitPair<AngleUnit> = {
     value: rateOfTurn,
     unit: "radians",
   };

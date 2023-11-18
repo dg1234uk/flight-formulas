@@ -15,8 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import type { DirectionUnit, ValueUnitPair } from "~/utils/unitConversions";
-import { DirectionUnits } from "~/utils/unitConversions";
+import type { AngleUnit, ValueUnitPair } from "~/utils/unitConversions";
+import { AngleUnits } from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -33,7 +33,7 @@ import { calculateTurnLoadFactorWithUnits } from "~/utils/formulas/turnLoadFacto
 
 const turnLFFormSchema = z.object({
   bankAngle: z.number().gt(-90).lt(90),
-  bankAngleUnits: z.enum(DirectionUnits),
+  bankAngleUnits: z.enum(AngleUnits),
 });
 
 export default function TurningLF() {
@@ -47,7 +47,7 @@ export default function TurningLF() {
   });
 
   function handleCalculate(values: z.infer<typeof turnLFFormSchema>) {
-    const bankAngleUnitPair: ValueUnitPair<DirectionUnit> = {
+    const bankAngleUnitPair: ValueUnitPair<AngleUnit> = {
       value: values.bankAngle,
       unit: values.bankAngleUnits,
     };
