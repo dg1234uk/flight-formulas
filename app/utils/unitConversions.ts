@@ -192,11 +192,9 @@ export function convertFromRadians(angle: number, unit: AngleUnit = "degrees") {
   }
 }
 
+// TODO: Remove this in favour of convertAngle
 export function convertToDegrees(angle: number, unit: AngleUnit = "radians") {
-  if (unit !== "degrees" && unit !== "radians") {
-    throw new Error("Invalid unit for conversion to Degrees.");
-  }
-  return unit === "radians" ? angle * RADIANS_TO_DEGREES : angle;
+  return convertAngle(angle, unit, "degrees");
 }
 
 export function convertAngle(
