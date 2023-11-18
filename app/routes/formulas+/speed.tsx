@@ -152,7 +152,19 @@ export default function SpeedConverter() {
         <CardContent>
           <article className="max-w-none text-center">
             <H3 className="mt-8">How the Speed Converter Works</H3>
-            <P>Need for speed</P>
+            <P>Conversion Factors:</P>
+            <ul className="list-disc pl-8 text-left">
+              <li>Knots to M/S: Multiply knots by 0.514</li>
+              <li>M/S to Knots: Multiply m/s by 1.944</li>
+              <li>Mph to M/S: Multiply mph by 0.447</li>
+              <li>M/S to Mph: Multiply m/s by 2.237</li>
+              <li>Km/h to M/S: Divide km/h by 3.6</li>
+              <li>M/S to Km/h: Multiply m/s by 3.6</li>
+              <li>Ft/s to M/S: Multiply ft/s by 0.305</li>
+              <li>M/S to Ft/s: Multiply m/s by 3.281</li>
+              <li>Ft/min to M/S: Divide ft/min by 196.85</li>
+              <li>M/S to Ft/min: Multiply m/s by 196.85</li>
+            </ul>
           </article>
         </CardContent>
       </Card>
