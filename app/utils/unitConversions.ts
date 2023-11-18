@@ -39,13 +39,22 @@ export type LengthUnit = (typeof LengthUnits)[number];
 // type DensityUnit = "kilogramsPerCubicMeter" | "poundsPerCubicFoot";
 
 type SpeedObject = Record<SpeedUnit, string>;
-export const SpeedLabels: SpeedObject = {
+export const speedLabels: SpeedObject = {
   "m/s": "Meters Per Second",
   knots: "Knots",
   mph: "Miles per hour",
   kph: "Kilometers per hour",
   fps: "Feet per second",
   fpm: "Feet per minute",
+};
+
+type LengthObject = Record<LengthUnit, string>;
+export const lengthLabels: LengthObject = {
+  meters: "Meters",
+  feet: "Feet",
+  nauticalMiles: "Nautical Miles",
+  kilometers: "Kilometers",
+  miles: "Miles",
 };
 
 export type ValueUnitPair<UnitType> = {
