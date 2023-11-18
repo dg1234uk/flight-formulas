@@ -170,22 +170,39 @@ export function convertLength(
   return convertFromMeters(convertToMeters(length, fromUnit), toUnit);
 }
 
-export function convertToRadians(
-  direction: number,
-  unit: AngleUnit = "degrees",
-) {
-  if (unit !== "degrees" && unit !== "radians") {
-    throw new Error("Invalid unit for conversion to Radians.");
+export function convertToRadians(angle: number, unit: AngleUnit = "degrees") {
+  switch (unit) {
+    case "radians":
+      return angle;
+    case "degrees":
+      return angle * DEGREES_TO_RADIANS;
+    default:
+      throw new Error("Invalid unit for conversion from meters.");
   }
-  return unit === "degrees" ? direction * DEGREES_TO_RADIANS : direction;
 }
 
-export function convertToDegrees(
-  direction: number,
-  unit: AngleUnit = "radians",
-) {
+export function convertFromRadians(angle: number, unit: AngleUnit = "degrees") {
+  switch (unit) {
+    case "radians":
+      return angle;
+    case "degrees":
+      return angle * RADIANS_TO_DEGREES;
+    default:
+      throw new Error("Invalid unit for conversion from meters.");
+  }
+}
+
+export function convertToDegrees(angle: number, unit: AngleUnit = "radians") {
   if (unit !== "degrees" && unit !== "radians") {
     throw new Error("Invalid unit for conversion to Degrees.");
   }
-  return unit === "radians" ? direction * RADIANS_TO_DEGREES : direction;
+  return unit === "radians" ? angle * RADIANS_TO_DEGREES : angle;
+}
+
+export function convertAngle(
+  angle: number,
+  fromUnit: AngleUnit,
+  toUnit: AngleUnit,
+) {
+  return convertFromRadians(convertToRadians(angle, fromUnit), toUnit);
 }

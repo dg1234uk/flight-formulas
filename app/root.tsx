@@ -72,7 +72,7 @@ const formulas: Formula[] = [
   },
   {
     name: "Angle Unit Converter",
-    href: "/formulas/angle-converter",
+    href: "/formulas/angle",
   },
   {
     name: "Temperature Unit Converter",
