@@ -158,7 +158,7 @@ export default function AngleConverter() {
             <H3 className="mt-8">How the Angle Converter Works</H3>
             <P>Conversion Factors:</P>
             <ul className="list-disc pl-8 text-left">
-              <li>Degrees to Radians: Multiply knots by xxx</li>
+              <li>Degrees to Radians: Multiply Degrees by xxx</li>
             </ul>
           </article>
         </CardContent>
