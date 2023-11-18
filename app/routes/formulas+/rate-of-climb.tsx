@@ -16,15 +16,11 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import type {
-  DirectionUnit,
+  AngleUnit,
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
-import {
-  DirectionUnits,
-  SpeedUnits,
-  convertSpeed,
-} from "~/utils/unitConversions";
+import { AngleUnits, SpeedUnits, convertSpeed } from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -43,7 +39,7 @@ const RateOfClimbFormSchema = z.object({
   tas: z.number().min(0),
   tasUnits: z.enum(SpeedUnits),
   fpa: z.number().min(-90).max(90),
-  fpaUnits: z.enum(DirectionUnits),
+  fpaUnits: z.enum(AngleUnits),
 });
 
 export default function RateOfClimb() {
@@ -63,7 +59,7 @@ export default function RateOfClimb() {
       value: values.tas,
       unit: values.tasUnits,
     };
-    const fpaUnitPair: ValueUnitPair<DirectionUnit> = {
+    const fpaUnitPair: ValueUnitPair<AngleUnit> = {
       value: values.fpa,
       unit: values.fpaUnits,
     };

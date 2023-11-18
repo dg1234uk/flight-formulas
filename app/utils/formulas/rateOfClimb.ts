@@ -1,8 +1,4 @@
-import type {
-  DirectionUnit,
-  SpeedUnit,
-  ValueUnitPair,
-} from "../unitConversions";
+import type { AngleUnit, SpeedUnit, ValueUnitPair } from "../unitConversions";
 import { convertSpeed, convertToRadians } from "../unitConversions";
 
 /**
@@ -21,12 +17,12 @@ export function calculateRateOfClimb(tas: number, fpa: number) {
  * Calculates the rate of climb for an aircraft with units.
  *
  * @param {ValueUnitPair<SpeedUnit>} tasUnitPair - The True Airspeed (TAS) of the aircraft along with its unit.
- * @param {ValueUnitPair<DirectionUnit>} fpaUnitPair - The Flight Path Angle (FPA) of the aircraft along with its unit.
+ * @param {ValueUnitPair<AngleUnit>} fpaUnitPair - The Flight Path Angle (FPA) of the aircraft along with its unit.
  * @returns {ValueUnitPair<SpeedUnit>} The rate of climb along with its unit.
  */
 export function calculateRateOfClimbWithUnits(
   tasUnitPair: ValueUnitPair<SpeedUnit>,
-  fpaUnitPair: ValueUnitPair<DirectionUnit>,
+  fpaUnitPair: ValueUnitPair<AngleUnit>,
 ) {
   const tasInMetersPerSecond = convertSpeed(
     tasUnitPair.value,

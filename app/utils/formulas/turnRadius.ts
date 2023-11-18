@@ -1,5 +1,5 @@
 import type {
-  DirectionUnit,
+  AngleUnit,
   LengthUnit,
   SpeedUnit,
   ValueUnitPair,
@@ -22,12 +22,12 @@ export function calculateTurnRadius(velocity: number, bankAngle: number) {
  * Calculates the turn radius of an aircraft with units.
  *
  * @param {ValueUnitPair<SpeedUnit>} velocityPair - The velocity of the aircraft along with its unit.
- * @param {ValueUnitPair<DirectionUnit>} bankAnglePair - The bank angle of the aircraft along with its unit.
+ * @param {ValueUnitPair<AngleUnit>} bankAnglePair - The bank angle of the aircraft along with its unit.
  * @returns {ValueUnitPair<LengthUnit>} The turn radius along with its unit.
  */
 export function calculateTurnRadiusWithUnits(
   velocityPair: ValueUnitPair<SpeedUnit>,
-  bankAnglePair: ValueUnitPair<DirectionUnit>,
+  bankAnglePair: ValueUnitPair<AngleUnit>,
 ) {
   const tasInMetersPerSecond = convertSpeed(
     velocityPair.value,

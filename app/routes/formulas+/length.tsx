@@ -8,8 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import type { SpeedUnit, ValueUnitPair } from "~/utils/unitConversions";
-import { speedLabels, convertSpeed } from "~/utils/unitConversions";
+import type { LengthUnit, ValueUnitPair } from "~/utils/unitConversions";
+import { convertLength, lengthLabels } from "~/utils/unitConversions";
 import { H3, P } from "~/components/ui/prose";
 import { Label } from "~/components/ui/label";
 
@@ -19,14 +19,14 @@ type NullableValueUnitPair<Unit> = {
     : ValueUnitPair<Unit>[K];
 };
 
-export default function SpeedConverter() {
-  const [input1, setInput1] = useState<NullableValueUnitPair<SpeedUnit>>({
+export default function LengthConverter() {
+  const [input1, setInput1] = useState<NullableValueUnitPair<LengthUnit>>({
     value: 0,
-    unit: "knots",
+    unit: "nauticalMiles",
   });
-  const [input2, setInput2] = useState<NullableValueUnitPair<SpeedUnit>>({
+  const [input2, setInput2] = useState<NullableValueUnitPair<LengthUnit>>({
     value: 0,
-    unit: "mph",
+    unit: "meters",
   });
 
   const handleInputChange = (
@@ -41,7 +41,7 @@ export default function SpeedConverter() {
     let convertedValue: number | "" = "";
 
     if (newValue !== "") {
-      convertedValue = convertSpeed(newValue, fromUnit, toUnit);
+      convertedValue = convertLength(newValue, fromUnit, toUnit);
     }
 
     if (isInput1) {
@@ -53,7 +53,7 @@ export default function SpeedConverter() {
     }
   };
 
-  const handleUnitChange = (newUnit: SpeedUnit, isInput1: boolean) => {
+  const handleUnitChange = (newUnit: LengthUnit, isInput1: boolean) => {
     const fromPair = isInput1 ? input1 : input2;
 
     if (fromPair.value === "") {
@@ -63,7 +63,7 @@ export default function SpeedConverter() {
         setInput2({ ...input2, unit: newUnit });
       }
     } else {
-      const convertedValue = convertSpeed(
+      const convertedValue = convertLength(
         fromPair.value,
         fromPair.unit,
         newUnit,
@@ -80,28 +80,26 @@ export default function SpeedConverter() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="font-medium">Speed Converter</CardTitle>
+          <CardTitle className="font-medium">Length Converter</CardTitle>
         </CardHeader>
         <CardContent>
           <form className="mx-auto grid max-w-lg gap-4">
             <div className="grid grid-cols-2 gap-2">
               <div className="grid gap-2">
-                <Label htmlFor="input1">Speed</Label>
+                <Label>Length</Label>
                 <Input
                   name="input1"
                   id="input1"
                   type="number"
-                  placeholder="Speed"
+                  placeholder="Length"
                   value={input1.value}
                   onChange={(e) => handleInputChange(e, true)}
                 />
-                <Label htmlFor="input1Units" className="sr-only">
-                  Input 1 Units
-                </Label>
+                <Label className="sr-only">Input 1 Units</Label>
                 <Select
                   name="input1Units"
                   onValueChange={(value) =>
-                    handleUnitChange(value as SpeedUnit, true)
+                    handleUnitChange(value as LengthUnit, true)
                   }
                   value={input1.unit}
                 >
@@ -109,7 +107,7 @@ export default function SpeedConverter() {
                     <SelectValue placeholder="Units" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(speedLabels).map(([key, value]) => (
+                    {Object.entries(lengthLabels).map(([key, value]) => (
                       <SelectItem key={key} value={key}>
                         {value}
                       </SelectItem>
@@ -118,22 +116,19 @@ export default function SpeedConverter() {
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="input2">Speed</Label>
+                <Label>Length</Label>
                 <Input
                   name="input2"
                   id="input2"
                   type="number"
                   value={input2.value}
-                  placeholder="Speed"
+                  placeholder="Length"
                   onChange={(e) => handleInputChange(e, false)}
                 />
-                <Label htmlFor="input2Units" className="sr-only">
-                  Input 2 Units
-                </Label>
+                <Label className="sr-only">Input 2 Units</Label>
                 <Select
-                  name="input2Units"
                   onValueChange={(value) =>
-                    handleUnitChange(value as SpeedUnit, false)
+                    handleUnitChange(value as LengthUnit, false)
                   }
                   value={input2.unit}
                 >
@@ -141,7 +136,7 @@ export default function SpeedConverter() {
                     <SelectValue placeholder="Units" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.entries(speedLabels).map(([key, value]) => (
+                    {Object.entries(lengthLabels).map(([key, value]) => (
                       <SelectItem key={key} value={key}>
                         {value}
                       </SelectItem>
@@ -156,19 +151,10 @@ export default function SpeedConverter() {
       <Card className="mt-8">
         <CardContent>
           <article className="max-w-none text-center">
-            <H3 className="mt-8">How the Speed Converter Works</H3>
+            <H3 className="mt-8">How the Length Converter Works</H3>
             <P>Conversion Factors:</P>
             <ul className="list-disc pl-8 text-left">
-              <li>Knots to M/S: Multiply knots by 0.514</li>
-              <li>M/S to Knots: Multiply m/s by 1.944</li>
-              <li>Mph to M/S: Multiply mph by 0.447</li>
-              <li>M/S to Mph: Multiply m/s by 2.237</li>
-              <li>Km/h to M/S: Divide km/h by 3.6</li>
-              <li>M/S to Km/h: Multiply m/s by 3.6</li>
-              <li>Ft/s to M/S: Multiply ft/s by 0.305</li>
-              <li>M/S to Ft/s: Multiply m/s by 3.281</li>
-              <li>Ft/min to M/S: Divide ft/min by 196.85</li>
-              <li>M/S to Ft/min: Multiply m/s by 196.85</li>
+              <li>NM to meters: Multiply NM by xxx</li>
             </ul>
           </article>
         </CardContent>

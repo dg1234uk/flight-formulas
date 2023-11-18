@@ -1,8 +1,4 @@
-import type {
-  DirectionUnit,
-  SpeedUnit,
-  ValueUnitPair,
-} from "../unitConversions";
+import type { AngleUnit, SpeedUnit, ValueUnitPair } from "../unitConversions";
 import { convertSpeed, convertToRadians } from "../unitConversions";
 
 /**
@@ -32,15 +28,15 @@ export function calculateHeadwind(
  * Calculates the headwind component given the wind speed, wind direction, and runway direction.
  *
  * @param {ValueUnitPair<SpeedUnit>} windSpeedUnitPair - The wind speed value and its unit.
- * @param {ValueUnitPair<DirectionUnit>} windDirectionUnitPair - The wind direction value and its unit.
- * @param {ValueUnitPair<DirectionUnit>} runwayDirectionUnitPair - The runway direction value and its unit.
+ * @param {ValueUnitPair<AngleUnit>} windDirectionUnitPair - The wind direction value and its unit.
+ * @param {ValueUnitPair<AngleUnit>} runwayDirectionUnitPair - The runway direction value and its unit.
  *
  * @returns {ValueUnitPair<SpeedUnit>} The headwind component value in meters per second and its unit.
  */
 export function calculateHeadwindWithUnits(
   windSpeedUnitPair: ValueUnitPair<SpeedUnit>,
-  windDirectionUnitPair: ValueUnitPair<DirectionUnit>,
-  runwayDirectionUnitPair: ValueUnitPair<DirectionUnit>,
+  windDirectionUnitPair: ValueUnitPair<AngleUnit>,
+  runwayDirectionUnitPair: ValueUnitPair<AngleUnit>,
 ) {
   // Convert all inputs to the standard units using the object properties
   const windSpeedInMetersPerSecond = convertSpeed(

@@ -1,4 +1,4 @@
-import type { DirectionUnit, ValueUnitPair } from "../unitConversions";
+import type { AngleUnit, ValueUnitPair } from "../unitConversions";
 import { convertToRadians } from "../unitConversions";
 
 /**
@@ -14,11 +14,11 @@ export function calculateTurnLoadFactor(bankAngle: number) {
 /**
  * Calculates the load factor in a turn for an aircraft with units.
  *
- * @param {ValueUnitPair<DirectionUnit>} bankAnglePair - The bank angle of the aircraft along with its unit.
+ * @param {ValueUnitPair<AngleUnit>} bankAnglePair - The bank angle of the aircraft along with its unit.
  * @returns {number} The load factor (also known as g-force) in the turn.
  */
 export function calculateTurnLoadFactorWithUnits(
-  bankAnglePair: ValueUnitPair<DirectionUnit>,
+  bankAnglePair: ValueUnitPair<AngleUnit>,
 ) {
   const bankAngleInRadians = convertToRadians(
     bankAnglePair.value,

@@ -16,12 +16,12 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import type {
-  DirectionUnit,
+  AngleUnit,
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
 import {
-  DirectionUnits,
+  AngleUnits,
   SpeedUnits,
   convertToDegrees,
 } from "~/utils/unitConversions";
@@ -43,11 +43,11 @@ const turnRateFormSchema = z.object({
   tas: z.number().min(0),
   tasUnits: z.enum(SpeedUnits),
   bankAngle: z.number().gt(-90).lt(90),
-  bankAngleUnits: z.enum(DirectionUnits),
+  bankAngleUnits: z.enum(AngleUnits),
 });
 
 export default function TurnRate() {
-  const [turnRate, setTurnRate] = useState<ValueUnitPair<DirectionUnit>>();
+  const [turnRate, setTurnRate] = useState<ValueUnitPair<AngleUnit>>();
   const form = useForm<z.infer<typeof turnRateFormSchema>>({
     resolver: zodResolver(turnRateFormSchema),
     defaultValues: {
@@ -63,7 +63,7 @@ export default function TurnRate() {
       value: values.tas,
       unit: values.tasUnits,
     };
-    const bankAngleUnitPair: ValueUnitPair<DirectionUnit> = {
+    const bankAngleUnitPair: ValueUnitPair<AngleUnit> = {
       value: values.bankAngle,
       unit: values.bankAngleUnits,
     };
@@ -79,7 +79,7 @@ export default function TurnRate() {
       rateUnitPair.unit,
     );
 
-    const convertedRateUnitPair: ValueUnitPair<DirectionUnit> = {
+    const convertedRateUnitPair: ValueUnitPair<AngleUnit> = {
       value: rateInDegrees,
       unit: resultUnit,
     };

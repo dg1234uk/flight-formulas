@@ -11,7 +11,7 @@ const NAUTICAL_MILES_TO_METERS = 1852;
 const KM_TO_METERS = 1000;
 const MILES_TO_METERS = 1609.34;
 
-// Direction
+// Angle
 const DEGREES_TO_RADIANS = Math.PI / 180;
 const RADIANS_TO_DEGREES = 180 / Math.PI;
 
@@ -19,8 +19,6 @@ const RADIANS_TO_DEGREES = 180 / Math.PI;
 export const g = 9.81; // Acceleration due to gravity in m/s^2
 
 export const SpeedUnits = ["m/s", "knots", "mph", "kph", "fps", "fpm"] as const;
-
-export const DirectionUnits = ["degrees", "radians"] as const;
 export const LengthUnits = [
   "meters",
   "feet",
@@ -28,10 +26,11 @@ export const LengthUnits = [
   "kilometers",
   "miles",
 ] as const;
+export const AngleUnits = ["degrees", "radians"] as const;
 
 export type SpeedUnit = (typeof SpeedUnits)[number];
-export type DirectionUnit = (typeof DirectionUnits)[number];
 export type LengthUnit = (typeof LengthUnits)[number];
+export type AngleUnit = (typeof AngleUnits)[number];
 
 // type MassUnit = "kilograms" | "pounds";
 // type TemperatureUnit = "celsius" | "fahrenheit";
@@ -39,13 +38,28 @@ export type LengthUnit = (typeof LengthUnits)[number];
 // type DensityUnit = "kilogramsPerCubicMeter" | "poundsPerCubicFoot";
 
 type SpeedObject = Record<SpeedUnit, string>;
-export const SpeedLabels: SpeedObject = {
+export const speedLabels: SpeedObject = {
   "m/s": "Meters Per Second",
   knots: "Knots",
   mph: "Miles per hour",
   kph: "Kilometers per hour",
   fps: "Feet per second",
   fpm: "Feet per minute",
+};
+
+type LengthObject = Record<LengthUnit, string>;
+export const lengthLabels: LengthObject = {
+  meters: "Meters",
+  feet: "Feet",
+  nauticalMiles: "Nautical Miles",
+  kilometers: "Kilometers",
+  miles: "Miles",
+};
+
+type AngleObject = Record<AngleUnit, string>;
+export const angleLables: AngleObject = {
+  degrees: "Degrees",
+  radians: "Radians",
 };
 
 export type ValueUnitPair<UnitType> = {
@@ -57,8 +71,8 @@ export function isSpeedUnit(unit: string): unit is SpeedUnit {
   return (SpeedUnits as readonly string[]).includes(unit);
 }
 
-export function isDirectionUnit(unit: string): unit is DirectionUnit {
-  return (DirectionUnits as readonly string[]).includes(unit);
+export function isDirectionUnit(unit: string): unit is AngleUnit {
+  return (AngleUnits as readonly string[]).includes(unit);
 }
 
 export function isLengthUnit(unit: string): unit is LengthUnit {
@@ -156,22 +170,37 @@ export function convertLength(
   return convertFromMeters(convertToMeters(length, fromUnit), toUnit);
 }
 
-export function convertToRadians(
-  direction: number,
-  unit: DirectionUnit = "degrees",
-) {
-  if (unit !== "degrees" && unit !== "radians") {
-    throw new Error("Invalid unit for conversion to Radians.");
+export function convertToRadians(angle: number, unit: AngleUnit = "degrees") {
+  switch (unit) {
+    case "radians":
+      return angle;
+    case "degrees":
+      return angle * DEGREES_TO_RADIANS;
+    default:
+      throw new Error("Invalid unit for conversion from meters.");
   }
-  return unit === "degrees" ? direction * DEGREES_TO_RADIANS : direction;
 }
 
-export function convertToDegrees(
-  direction: number,
-  unit: DirectionUnit = "radians",
-) {
-  if (unit !== "degrees" && unit !== "radians") {
-    throw new Error("Invalid unit for conversion to Degrees.");
+export function convertFromRadians(angle: number, unit: AngleUnit = "degrees") {
+  switch (unit) {
+    case "radians":
+      return angle;
+    case "degrees":
+      return angle * RADIANS_TO_DEGREES;
+    default:
+      throw new Error("Invalid unit for conversion from meters.");
   }
-  return unit === "radians" ? direction * RADIANS_TO_DEGREES : direction;
+}
+
+// TODO: Remove this in favour of convertAngle
+export function convertToDegrees(angle: number, unit: AngleUnit = "radians") {
+  return convertAngle(angle, unit, "degrees");
+}
+
+export function convertAngle(
+  angle: number,
+  fromUnit: AngleUnit,
+  toUnit: AngleUnit,
+) {
+  return convertFromRadians(convertToRadians(angle, fromUnit), toUnit);
 }

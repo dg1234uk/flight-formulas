@@ -16,12 +16,12 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import type {
-  DirectionUnit,
+  AngleUnit,
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
 import {
-  DirectionUnits,
+  AngleUnits,
   SpeedUnits,
   convertSpeed,
   isDirectionUnit,
@@ -45,9 +45,9 @@ const headwindFormSchema = z.object({
   windSpeed: z.number().min(0),
   windSpeedUnits: z.enum(SpeedUnits),
   runwayDirection: z.number().min(0).max(360),
-  runwayDirectionUnits: z.enum(DirectionUnits),
+  runwayDirectionUnits: z.enum(AngleUnits),
   windDirection: z.number().min(0).max(360),
-  windDirectionUnits: z.enum(DirectionUnits),
+  windDirectionUnits: z.enum(AngleUnits),
 });
 
 export default function Headwind() {
@@ -84,11 +84,11 @@ export default function Headwind() {
         unit: windSpeedUnits,
       };
 
-      const runwayDirectionPair: ValueUnitPair<DirectionUnit> = {
+      const runwayDirectionPair: ValueUnitPair<AngleUnit> = {
         value: Number(runwayDirection),
         unit: runwayDirectionUnits,
       };
-      const windDirectionPair: ValueUnitPair<DirectionUnit> = {
+      const windDirectionPair: ValueUnitPair<AngleUnit> = {
         value: Number(windDirection),
         unit: windDirectionUnits,
       };

@@ -16,16 +16,12 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import type {
-  DirectionUnit,
+  AngleUnit,
   LengthUnit,
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
-import {
-  DirectionUnits,
-  SpeedUnits,
-  convertLength,
-} from "~/utils/unitConversions";
+import { AngleUnits, SpeedUnits, convertLength } from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -44,7 +40,7 @@ const turnRadiusFormSchema = z.object({
   tas: z.number().min(0),
   tasUnits: z.enum(SpeedUnits),
   bankAngle: z.number().gt(-90).lt(90),
-  bankAngleUnits: z.enum(DirectionUnits),
+  bankAngleUnits: z.enum(AngleUnits),
 });
 
 export default function TurnRadius() {
@@ -64,7 +60,7 @@ export default function TurnRadius() {
       value: values.tas,
       unit: values.tasUnits,
     };
-    const bankAngleUnitPair: ValueUnitPair<DirectionUnit> = {
+    const bankAngleUnitPair: ValueUnitPair<AngleUnit> = {
       value: values.bankAngle,
       unit: values.bankAngleUnits,
     };

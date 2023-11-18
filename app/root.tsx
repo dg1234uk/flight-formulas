@@ -1,5 +1,4 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from "@remix-run/node";
 import {
   Link,
   Links,
@@ -10,8 +9,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import fontStylesheetUrl from "./styles/mathfonts.css";
-import tailwindStylesheetUrl from "./styles/tailwind.css";
+import "./styles/mathfonts.css";
+import "./styles/tailwind.css";
 import { GeneralErrorBoundary } from "./components/error-boundary";
 import { buttonVariants } from "./components/ui/button";
 
@@ -23,14 +22,6 @@ export const meta: MetaFunction = () => {
       content: `Aviation calculators and unit converters.`,
     },
   ];
-};
-
-export const links: LinksFunction = () => {
-  return [
-    { rel: "stylesheet", href: fontStylesheetUrl },
-    { rel: "stylesheet", href: tailwindStylesheetUrl },
-    ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
-  ].filter(Boolean);
 };
 
 type Formula = {
@@ -76,12 +67,12 @@ const formulas: Formula[] = [
     href: "/formulas/speed",
   },
   {
-    name: "Distance Unit Converter",
-    href: "/formulas/distance-converter",
+    name: "Length Unit Converter",
+    href: "/formulas/length",
   },
   {
     name: "Angle Unit Converter",
-    href: "/formulas/angle-converter",
+    href: "/formulas/angle",
   },
   {
     name: "Temperature Unit Converter",
@@ -322,12 +313,12 @@ export default function App() {
                       isPending
                         ? "pending"
                         : isActive
-                        ? `${buttonVariants({
-                            variant: "link",
-                          })} bg-blue-200 dark:bg-blue-700`
-                        : `${buttonVariants({
-                            variant: "link",
-                          })}`
+                          ? `${buttonVariants({
+                              variant: "link",
+                            })} bg-blue-200 dark:bg-blue-700`
+                          : `${buttonVariants({
+                              variant: "link",
+                            })}`
                     }
                   >
                     {formula.name}
