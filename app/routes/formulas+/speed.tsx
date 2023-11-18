@@ -86,7 +86,7 @@ export default function SpeedConverter() {
           <form className="mx-auto grid max-w-lg gap-4">
             <div className="grid grid-cols-2 gap-2">
               <div className="grid gap-2">
-                <Label>Speed</Label>
+                <Label htmlFor="input1">Speed</Label>
                 <Input
                   name="input1"
                   id="input1"
@@ -95,7 +95,9 @@ export default function SpeedConverter() {
                   value={input1.value}
                   onChange={(e) => handleInputChange(e, true)}
                 />
-                <Label className="sr-only">Input 1 Units</Label>
+                <Label htmlFor="input1Units" className="sr-only">
+                  Input 1 Units
+                </Label>
                 <Select
                   name="input1Units"
                   onValueChange={(value) =>
@@ -103,7 +105,7 @@ export default function SpeedConverter() {
                   }
                   value={input1.unit}
                 >
-                  <SelectTrigger id="speed1Units">
+                  <SelectTrigger id="input1Units">
                     <SelectValue placeholder="Units" />
                   </SelectTrigger>
                   <SelectContent>
@@ -116,7 +118,7 @@ export default function SpeedConverter() {
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label>Speed</Label>
+                <Label htmlFor="input2">Speed</Label>
                 <Input
                   name="input2"
                   id="input2"
@@ -125,14 +127,17 @@ export default function SpeedConverter() {
                   placeholder="Speed"
                   onChange={(e) => handleInputChange(e, false)}
                 />
-                <Label className="sr-only">Input 2 Units</Label>
+                <Label htmlFor="input2Units" className="sr-only">
+                  Input 2 Units
+                </Label>
                 <Select
+                  name="input2Units"
                   onValueChange={(value) =>
                     handleUnitChange(value as SpeedUnit, false)
                   }
                   value={input2.unit}
                 >
-                  <SelectTrigger id="speed2Units">
+                  <SelectTrigger id="input2Units">
                     <SelectValue placeholder="Units" />
                   </SelectTrigger>
                   <SelectContent>
