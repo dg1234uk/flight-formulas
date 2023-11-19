@@ -20,11 +20,7 @@ import type {
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
-import {
-  AngleUnits,
-  SpeedUnits,
-  convertToDegrees,
-} from "~/utils/unitConversions";
+import { AngleUnits, SpeedUnits, convertAngle } from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -74,9 +70,10 @@ export default function TurnRate() {
     );
 
     const resultUnit = "degrees";
-    const rateInDegrees = convertToDegrees(
+    const rateInDegrees = convertAngle(
       rateUnitPair.value,
       rateUnitPair.unit,
+      resultUnit,
     );
 
     const convertedRateUnitPair: ValueUnitPair<AngleUnit> = {
