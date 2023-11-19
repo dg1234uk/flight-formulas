@@ -20,7 +20,7 @@ import type {
   SpeedUnit,
   ValueUnitPair,
 } from "~/utils/unitConversions";
-import { SpeedUnits, convertToDegrees } from "~/utils/unitConversions";
+import { SpeedUnits, convertAngle } from "~/utils/unitConversions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -59,7 +59,11 @@ export default function StandardRateTurn() {
     const standardRateAOBRadians =
       calculateStandardRateBankAngleWithUnits(tasUnitPair);
 
-    const AOBdegrees = convertToDegrees(standardRateAOBRadians);
+    const AOBdegrees = convertAngle(
+      standardRateAOBRadians,
+      "radians",
+      "degrees",
+    );
 
     const bankAngleUnitPair: ValueUnitPair<AngleUnit> = {
       value: AOBdegrees,
