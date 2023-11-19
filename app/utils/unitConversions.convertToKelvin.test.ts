@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import type { TemperatureUnit } from "~/utils/unitConversions";
 import { convertToKelvin } from "~/utils/unitConversions";
 
 test("should correctly convert from Kelvin to Kelvin", () => {
@@ -18,8 +19,7 @@ test("should correctly convert from Rankine to Kelvin", () => {
 });
 
 test("should throw an error for an invalid unit", () => {
-  // @ts-expect-error - intentionally passing an invalid unit
-  expect(() => convertToKelvin(100, "invalid")).toThrow(
-    "Invalid unit for conversion to meters.",
+  expect(() => convertToKelvin(100, "invalid" as TemperatureUnit)).toThrow(
+    "Invalid unit for conversion to kelvin.",
   );
 });

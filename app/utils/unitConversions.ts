@@ -196,7 +196,7 @@ export function convertToRadians(angle: number, unit: AngleUnit = "degrees") {
     case "degrees":
       return angle * DEGREES_TO_RADIANS;
     default:
-      throw new Error("Invalid unit for conversion from meters.");
+      throw new Error("Invalid unit for conversion to radians.");
   }
 }
 
@@ -207,7 +207,7 @@ export function convertFromRadians(angle: number, unit: AngleUnit = "degrees") {
     case "degrees":
       return angle * RADIANS_TO_DEGREES;
     default:
-      throw new Error("Invalid unit for conversion from meters.");
+      throw new Error("Invalid unit for conversion from radians.");
   }
 }
 
@@ -239,7 +239,7 @@ export function convertToKelvin(temperature: number, unit: TemperatureUnit) {
     case "rankine":
       return temperature * RATIO_FAHRENHEIT_TO_KELVIN;
     default:
-      throw new Error("Invalid unit for conversion to meters.");
+      throw new Error("Invalid unit for conversion to kelvin.");
   }
 }
 
@@ -258,7 +258,7 @@ export function convertFromKelvin(temperature: number, unit: TemperatureUnit) {
     case "rankine":
       return temperature / RATIO_FAHRENHEIT_TO_KELVIN;
     default:
-      throw new Error("Invalid unit for conversion from meters.");
+      throw new Error("Invalid unit for conversion from kelvin.");
   }
 }
 
