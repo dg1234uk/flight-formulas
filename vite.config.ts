@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { unstable_vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import { flatRoutes } from "remix-flat-routes";
@@ -20,4 +21,13 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  test: {
+    include: ["./app/**/*.test.{ts,tsx}"],
+    setupFiles: ["./tests/setup/setup-test-env.ts"],
+    restoreMocks: true,
+    coverage: {
+      include: ["app/**/*.{ts,tsx}"],
+      all: true,
+    },
+  },
 });
