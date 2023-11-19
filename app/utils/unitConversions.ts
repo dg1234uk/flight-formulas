@@ -15,6 +15,11 @@ const MILES_TO_METERS = 1609.34;
 const DEGREES_TO_RADIANS = Math.PI / 180;
 const RADIANS_TO_DEGREES = 180 / Math.PI;
 
+// Temperature
+const ZERO_CELSIUS_KELVIN_OFFSET = 273.15;
+const RATIO_FAHRENHEIT_TO_KELVIN = 5 / 9;
+const ZERO_CELSIUS_IN_FAHRENHEIT = 32;
+
 // Constants
 export const g = 9.81; // Acceleration due to gravity in m/s^2
 
@@ -27,13 +32,19 @@ export const LengthUnits = [
   "miles",
 ] as const;
 export const AngleUnits = ["degrees", "radians"] as const;
+export const TemperatureUnits = [
+  "celsius",
+  "fahrenheit",
+  "kelvin",
+  "rankine",
+] as const;
 
 export type SpeedUnit = (typeof SpeedUnits)[number];
 export type LengthUnit = (typeof LengthUnits)[number];
 export type AngleUnit = (typeof AngleUnits)[number];
+export type TemperatureUnit = (typeof TemperatureUnits)[number];
 
 // type MassUnit = "kilograms" | "pounds";
-// type TemperatureUnit = "celsius" | "fahrenheit";
 // type VolumeUnit = "litres" | "gallons";
 // type DensityUnit = "kilogramsPerCubicMeter" | "poundsPerCubicFoot";
 
@@ -60,6 +71,14 @@ type AngleObject = Record<AngleUnit, string>;
 export const angleLables: AngleObject = {
   degrees: "Degrees",
   radians: "Radians",
+};
+
+type TemperatureObject = Record<TemperatureUnit, string>;
+export const temperatureLabels: TemperatureObject = {
+  celsius: "Celsius",
+  fahrenheit: "Fahrenheit",
+  kelvin: "Kelvin",
+  rankine: "Rankine",
 };
 
 export type ValueUnitPair<UnitType> = {
@@ -203,4 +222,50 @@ export function convertAngle(
   toUnit: AngleUnit,
 ) {
   return convertFromRadians(convertToRadians(angle, fromUnit), toUnit);
+}
+
+export function convertToKelvin(temperature: number, unit: TemperatureUnit) {
+  switch (unit) {
+    case "kelvin":
+      return temperature;
+    case "celsius":
+      return temperature + ZERO_CELSIUS_KELVIN_OFFSET;
+    case "fahrenheit":
+      return (
+        (temperature - ZERO_CELSIUS_IN_FAHRENHEIT) *
+          RATIO_FAHRENHEIT_TO_KELVIN +
+        ZERO_CELSIUS_KELVIN_OFFSET
+      );
+    case "rankine":
+      return temperature * RATIO_FAHRENHEIT_TO_KELVIN;
+    default:
+      throw new Error("Invalid unit for conversion to meters.");
+  }
+}
+
+export function convertFromKelvin(temperature: number, unit: TemperatureUnit) {
+  switch (unit) {
+    case "kelvin":
+      return temperature;
+    case "celsius":
+      return temperature - ZERO_CELSIUS_KELVIN_OFFSET;
+    case "fahrenheit":
+      return (
+        (temperature - ZERO_CELSIUS_KELVIN_OFFSET) /
+          RATIO_FAHRENHEIT_TO_KELVIN +
+        ZERO_CELSIUS_IN_FAHRENHEIT
+      );
+    case "rankine":
+      return temperature / RATIO_FAHRENHEIT_TO_KELVIN;
+    default:
+      throw new Error("Invalid unit for conversion from meters.");
+  }
+}
+
+export function convertTemperature(
+  temperature: number,
+  fromUnit: TemperatureUnit,
+  toUnit: TemperatureUnit,
+) {
+  return convertFromKelvin(convertToKelvin(temperature, fromUnit), toUnit);
 }
